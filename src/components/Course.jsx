@@ -1,164 +1,6 @@
-// import React, { useState } from 'react';
-// import { motion } from 'framer-motion';
-// import {
-//   Card,
-//   CardContent,
-//   CardHeader,
-//   CardTitle,
-//   CardDescription,
-//   CardFooter,
-// } from '@/components/ui/card';
-// import { Button } from '@/components/ui/button';
-// import { Star, Filter } from 'lucide-react';
-// import courses from '@/data/coursesData';
-
-// const CoursesPage = () => {
-//   const [selectedCategory, setSelectedCategory] = useState('All');
-
-//   const categories = [
-//     'All',
-//     'Web Development',
-//     'Data Science',
-//     'Machine Learning',
-//     'Business',
-//     'Design',
-//   ];
-
-//   const courses = [
-//     {
-//       id: 1,
-//       title: 'React Masterclass',
-//       description: 'Advanced React development from basics to production',
-//       category: 'Web Development',
-//       price: 49.99,
-//       rating: 4.7,
-//       image: '/api/placeholder/300/200',
-//     },
-//     {
-//       id: 2,
-//       title: 'Python for Data Science',
-//       description: 'Comprehensive Python data analysis and visualization',
-//       category: 'Data Science',
-//       price: 59.99,
-//       rating: 4.9,
-//       image: '/api/placeholder/300/200',
-//     },
-//     {
-//       id: 3,
-//       title: 'Machine Learning Fundamentals',
-//       description: 'Introduction to machine learning algorithms',
-//       category: 'Machine Learning',
-//       price: 79.99,
-//       rating: 4.5,
-//       image: '/api/placeholder/300/200',
-//     },
-//     // More courses...
-//   ];
-
-//   const filteredCourses =
-//     selectedCategory === 'All'
-//       ? courses
-//       : courses.filter((course) => course.category === selectedCategory);
-
-//   return (
-//     <div className="container mx-auto p-6">
-//       <h1 className="text-3xl font-bold mb-8 text-center">
-//         Explore Our Courses
-//       </h1>
-
-//       {/* Category Filters */}
-//       <div className="flex justify-center space-x-4 mb-8">
-//         {categories.map((category) => (
-//           <Button
-//             key={category}
-//             variant={selectedCategory === category ? 'default' : 'outline'}
-//             onClick={() => setSelectedCategory(category)}
-//             className="flex items-center"
-//           >
-//             <Filter className="mr-2" size={16} />
-//             {category}
-//           </Button>
-//         ))}
-//       </div>
-
-//       {/* Courses Grid */}
-//       <motion.div
-//         className="grid md:grid-cols-3 gap-6"
-//         initial="hidden"
-//         animate="visible"
-//         variants={{
-//           hidden: { opacity: 0 },
-//           visible: {
-//             opacity: 1,
-//             transition: {
-//               delayChildren: 0.2,
-//               staggerChildren: 0.1,
-//             },
-//           },
-//         }}
-//       >
-//         {filteredCourses.map((course) => (
-//           <motion.div
-//             key={course.id}
-//             variants={{
-//               hidden: { opacity: 0, y: 20 },
-//               visible: {
-//                 opacity: 1,
-//                 y: 0,
-//                 transition: { duration: 0.5 },
-//               },
-//             }}
-//             whileHover={{
-//               scale: 1.05,
-//               transition: { duration: 0.2 },
-//             }}
-//           >
-//             <Card className="overflow-hidden">
-//               <CardHeader>
-//                 <img
-//                   src={course.image}
-//                   alt={course.title}
-//                   className="w-full h-48 object-cover"
-//                 />
-//                 <CardTitle>{course.title}</CardTitle>
-//                 <CardDescription>{course.description}</CardDescription>
-//               </CardHeader>
-//               <CardContent>
-//                 <div className="flex justify-between items-center">
-//                   <div className="flex items-center text-yellow-500">
-//                     {[...Array(5)].map((_, i) => (
-//                       <Star
-//                         key={i}
-//                         fill={
-//                           i < Math.floor(course.rating)
-//                             ? 'currentColor'
-//                             : 'none'
-//                         }
-//                         size={20}
-//                       />
-//                     ))}
-//                     <span className="ml-2 text-gray-600">
-//                       ({course.rating})
-//                     </span>
-//                   </div>
-//                   <span className="font-bold text-xl">${course.price}</span>
-//                 </div>
-//               </CardContent>
-//               <CardFooter>
-//                 <Button className="w-full">Enroll Now</Button>
-//               </CardFooter>
-//             </Card>
-//           </motion.div>
-//         ))}
-//       </motion.div>
-//     </div>
-//   );
-// };
-
-// export default CoursesPage;
-
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   Card,
   CardContent,
@@ -168,117 +10,113 @@ import {
   CardFooter,
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Star, Filter } from 'lucide-react';
-import courses from '@/data/coursesData'; // Importing courses from separate file
+import { Star, BookOpen, Clock } from 'lucide-react';
+import courses from '@/data/coursesData';
 
 const CoursesPage = () => {
-  const [selectedCategory, setSelectedCategory] = useState('All');
+  const navigate = useNavigate();
+  const [expandedCategories, setExpandedCategories] = useState({});
 
-  const categories = [
-    'All',
-    'Web Development',
-    'Data Science',
-    'Machine Learning',
-    'Business',
-    'Design',
-  ];
+  const coursesByCategory = useMemo(() => {
+    return courses.reduce((acc, course) => {
+      if (!acc[course.category]) {
+        acc[course.category] = [];
+      }
+      acc[course.category].push(course);
+      return acc;
+    }, {});
+  }, []);
 
-  const filteredCourses =
-    selectedCategory === 'All'
-      ? courses
-      : courses.filter((course) => course.category === selectedCategory);
+  const toggleCategory = (category) => {
+    setExpandedCategories((prev) => ({
+      ...prev,
+      [category]: !prev[category],
+    }));
+  };
+
+  const renderCourseCard = (course) => (
+    <motion.div
+      key={course.id}
+      layout
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.9 }}
+      transition={{ duration: 0.3 }}
+      whileHover={{ scale: 1.05 }}
+      className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-2"
+    >
+      <Card className="h-full flex flex-col overflow-hidden">
+        <CardHeader className="p-0">
+          <img
+            src={course.image}
+            alt={course.title}
+            className="w-full h-48 object-cover"
+          />
+          <div className="p-4">
+            <CardTitle>{course.title}</CardTitle>
+            <CardDescription>{course.description}</CardDescription>
+          </div>
+        </CardHeader>
+        <CardContent className="flex-grow">
+          <div className="flex justify-between items-center mb-4">
+            <div className="flex items-center text-yellow-500">
+              {[...Array(5)].map((_, i) => (
+                <Star
+                  key={i}
+                  fill={i < Math.floor(course.rating) ? 'currentColor' : 'none'}
+                  size={20}
+                />
+              ))}
+              <span className="ml-2 text-gray-600">({course.rating})</span>
+            </div>
+            <span className="font-bold text-xl">${course.price}</span>
+          </div>
+          <div className="flex items-center text-gray-600">
+            <Clock className="mr-2" size={16} />
+            <span>{course.duration}</span>
+          </div>
+        </CardContent>
+        <CardFooter>
+          <Button
+            className="w-full"
+            onClick={() => navigate(`/course/${course.id}`)}
+          >
+            <BookOpen className="mr-2" size={16} />
+            Enroll Now
+          </Button>
+        </CardFooter>
+      </Card>
+    </motion.div>
+  );
 
   return (
-    <div className="container mx-auto p-6">
+    <div className="container mx-auto mt-20 p-6">
       <h1 className="text-3xl font-bold mb-8 text-center">
         Explore Our Courses
       </h1>
 
-      {/* Category Filters */}
-      <div className="flex justify-center space-x-4 mb-8">
-        {categories.map((category) => (
-          <Button
-            key={category}
-            variant={selectedCategory === category ? 'default' : 'outline'}
-            onClick={() => setSelectedCategory(category)}
-            className="flex items-center"
-          >
-            <Filter className="mr-2" size={16} />
-            {category}
-          </Button>
-        ))}
-      </div>
+      {Object.entries(coursesByCategory).map(([category, categoryCourses]) => (
+        <div key={category} className="mb-12">
+          <h2 className="text-2xl font-semibold mb-6">{category} Courses</h2>
 
-      {/* Courses Grid */}
-      <motion.div
-        className="grid md:grid-cols-3 gap-6"
-        initial="hidden"
-        animate="visible"
-        variants={{
-          hidden: { opacity: 0 },
-          visible: {
-            opacity: 1,
-            transition: {
-              delayChildren: 0.2,
-              staggerChildren: 0.1,
-            },
-          },
-        }}
-      >
-        {filteredCourses.map((course) => (
-          <motion.div
-            key={course.id}
-            variants={{
-              hidden: { opacity: 0, y: 20 },
-              visible: {
-                opacity: 1,
-                y: 0,
-                transition: { duration: 0.5 },
-              },
-            }}
-            whileHover={{
-              scale: 1.05,
-              transition: { duration: 0.2 },
-            }}
-          >
-            <Card className="overflow-hidden">
-              <CardHeader>
-                <img
-                  src={course.image}
-                  alt={course.title}
-                  className="w-full h-48 object-cover"
-                />
-                <CardTitle>{course.title}</CardTitle>
-                <CardDescription>{course.description}</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="flex justify-between items-center">
-                  <div className="flex items-center text-yellow-500">
-                    {[...Array(5)].map((_, i) => (
-                      <Star
-                        key={i}
-                        fill={
-                          i < Math.floor(course.rating)
-                            ? 'currentColor'
-                            : 'none'
-                        }
-                        size={20}
-                      />
-                    ))}
-                    <span className="ml-2 text-gray-600">
-                      ({course.rating})
-                    </span>
-                  </div>
-                  <span className="font-bold text-xl">${course.price}</span>
-                </div>
-              </CardContent>
-              <CardFooter>
-                <Button className="w-full">Enroll Now</Button>
-              </CardFooter>
-            </Card>
-          </motion.div>
-        ))}
-      </motion.div>
+          <div className="flex flex-wrap -mx-2">
+            {categoryCourses
+              .slice(0, expandedCategories[category] ? undefined : 4)
+              .map(renderCourseCard)}
+          </div>
+
+          {categoryCourses.length > 4 && (
+            <div className="text-center mt-6">
+              <Button
+                variant="outline"
+                onClick={() => toggleCategory(category)}
+              >
+                {expandedCategories[category] ? 'Show Less' : `View All `}
+              </Button>
+            </div>
+          )}
+        </div>
+      ))}
     </div>
   );
 };
