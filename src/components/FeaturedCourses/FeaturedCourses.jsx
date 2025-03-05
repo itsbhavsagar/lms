@@ -1,10 +1,16 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useEffect, useRef } from 'react';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Star, BookOpen, TrendingUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
+gsap.registerPlugin(ScrollTrigger);
+
 const FeaturedCoursesSection = () => {
+  const sectionRef = useRef(null);
+  const courseRefs = useRef([]);
+
   const featuredCourses = [
     {
       id: 1,
@@ -14,6 +20,8 @@ const FeaturedCoursesSection = () => {
       rating: 4.8,
       students: 5200,
       icon: <TrendingUp className="text-blue-600" size={32} />,
+      description:
+        'Master modern web technologies and build responsive applications.',
     },
     {
       id: 2,
@@ -23,6 +31,8 @@ const FeaturedCoursesSection = () => {
       rating: 4.7,
       students: 4800,
       icon: <BookOpen className="text-green-600" size={32} />,
+      description:
+        'Learn data analysis, visualization, and machine learning basics.',
     },
     {
       id: 3,
@@ -32,13 +42,88 @@ const FeaturedCoursesSection = () => {
       rating: 4.9,
       students: 6100,
       icon: <Star className="text-yellow-500" size={32} />,
+      description:
+        'Deep dive into advanced Python concepts and software engineering.',
     },
   ];
 
+  useEffect(() => {
+    gsap.fromTo(
+      sectionRef.current.querySelector('h2'),
+      {
+        opacity: 0,
+        y: 50,
+        scale: 0.8,
+      },
+      {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        duration: 1,
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top 80%',
+          toggleActions: 'play none none reverse',
+        },
+      }
+    );
+
+    courseRefs.current.forEach((courseEl, index) => {
+      gsap.fromTo(
+        courseEl,
+        {
+          opacity: 0,
+          y: 100,
+          rotationX: -45,
+          scale: 0.8,
+        },
+        {
+          opacity: 1,
+          y: 0,
+          rotationX: 0,
+          scale: 1,
+          duration: 1,
+          delay: index * 0.2,
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top 80%',
+            toggleActions: 'play none none reverse',
+          },
+        }
+      );
+
+      courseEl.addEventListener('mouseenter', () => {
+        gsap.to(courseEl, {
+          scale: 1.05,
+          boxShadow:
+            '0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04)',
+          duration: 0.3,
+          ease: 'power1.out',
+        });
+      });
+
+      courseEl.addEventListener('mouseleave', () => {
+        gsap.to(courseEl, {
+          scale: 1,
+          boxShadow: 'none',
+          duration: 0.3,
+          ease: 'power1.out',
+        });
+      });
+    });
+
+    return () => {
+      ScrollTrigger.getAll().forEach((t) => t.kill());
+    };
+  }, []);
+
   return (
-    <section className="container mx-auto px-4 py-16">
+    <section
+      ref={sectionRef}
+      className="container mx-auto px-4 py-16 overflow-hidden"
+    >
       <div className="text-center mb-12">
-        <h2 className="text-3xl font-bold mb-4">Featured Courses</h2>
+        <h2 className="text-3xl font-bold mb-4 opacity-0">Featured Courses</h2>
         <p className="text-gray-600 max-w-2xl mx-auto">
           Discover our top-rated courses that can help you advance your skills
           and career.
@@ -46,11 +131,11 @@ const FeaturedCoursesSection = () => {
       </div>
 
       <div className="grid md:grid-cols-3 gap-6">
-        {featuredCourses.map((course) => (
-          <motion.div
+        {featuredCourses.map((course, index) => (
+          <div
             key={course.id}
-            whileHover={{ scale: 1.05 }}
-            transition={{ duration: 0.3 }}
+            ref={(el) => (courseRefs.current[index] = el)}
+            className="opacity-0"
           >
             <Card className="h-full flex flex-col">
               <CardHeader className="flex-row items-center space-x-4 pb-2">
@@ -59,6 +144,7 @@ const FeaturedCoursesSection = () => {
               </CardHeader>
               <CardContent className="flex-grow">
                 <div className="space-y-4">
+                  <p className="text-sm text-gray-500">{course.description}</p>
                   <div>
                     <p className="text-sm text-gray-500">
                       Instructor: {course.instructor}
@@ -81,7 +167,7 @@ const FeaturedCoursesSection = () => {
                 <Button className="w-full">Explore Course</Button>
               </div>
             </Card>
-          </motion.div>
+          </div>
         ))}
       </div>
     </section>

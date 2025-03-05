@@ -3,28 +3,12 @@ import { motion } from 'framer-motion';
 import { Check, Lock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
+import { learningPaths } from '../../data/paths.js';
 
 const LearningPathSection = () => {
-  const [selectedPath, setSelectedPath] = useState('Web Development');
-
-  const learningPaths = {
-    'Web Development': [
-      { title: 'HTML & CSS Fundamentals', completed: true },
-      { title: 'JavaScript Basics', completed: true },
-      { title: 'React.js Intermediate', completed: false },
-      { title: 'Advanced Frontend Frameworks', completed: false },
-      { title: 'Full Stack Development', completed: false },
-    ],
-    'Data Science': [
-      { title: 'Python Programming', completed: true },
-      { title: 'Statistics Fundamentals', completed: true },
-      { title: 'Machine Learning Basics', completed: false },
-      { title: 'Deep Learning', completed: false },
-      { title: 'AI & Neural Networks', completed: false },
-    ],
-  };
-
-  const paths = Object.keys(learningPaths);
+  const [selectedPath, setSelectedPath] = useState(
+    Object.keys(learningPaths)[0]
+  );
 
   return (
     <section className="container mx-auto px-4 py-16">
@@ -38,7 +22,7 @@ const LearningPathSection = () => {
 
       <div className="flex flex-col md:flex-row gap-8">
         <div className="md:w-1/4 space-y-4">
-          {paths.map((path) => (
+          {Object.keys(learningPaths).map((path) => (
             <Button
               key={path}
               variant={selectedPath === path ? 'default' : 'outline'}

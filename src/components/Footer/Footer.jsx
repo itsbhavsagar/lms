@@ -48,7 +48,6 @@ const Footer = () => {
     >
       <div className="container mx-auto px-4">
         <div className="grid md:grid-cols-4 gap-8">
-          {/* Brand Section */}
           <motion.div whileHover={{ scale: 1.05 }} className="space-y-4">
             <div className="flex items-center space-x-2">
               <GraduationCap className="text-blue-500" size={32} />
@@ -73,7 +72,6 @@ const Footer = () => {
             </div>
           </motion.div>
 
-          {/* Footer Links */}
           {Object.entries(footerLinks).map(([category, links]) => (
             <motion.div
               key={category}
@@ -106,7 +104,6 @@ const Footer = () => {
             </motion.div>
           ))}
 
-          {/* Newsletter */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -136,7 +133,6 @@ const Footer = () => {
           </motion.div>
         </div>
 
-        {/* Copyright */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
