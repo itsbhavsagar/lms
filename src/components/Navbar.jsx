@@ -1,59 +1,38 @@
-import React, { useState } from 'react';
+import React, { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
-import {
-  NavigationMenu,
-  NavigationMenuList,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  navigationMenuTriggerStyle,
-} from '@/components/ui/navigation-menu';
+import { GraduationCap, Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { GraduationCap, Menu, X } from 'lucide-react';
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from '@/components/ui/sheet';
+import DesktopNav from './navigation/DesktopNav';
+import MobileNav from '../components/navigation/MobileNav';
+import AuthButtons from './AuthButton/AuthButtons';
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const containerVariants = {
-    hidden: {
-      opacity: 0,
-      height: 0,
-      transition: { duration: 0.3, when: 'afterChildren' },
-    },
-    visible: {
-      opacity: 1,
-      height: 'auto',
-      transition: {
-        duration: 0.3,
-        when: 'beforeChildren',
-        staggerChildren: 0.1,
-      },
-    },
-  };
+  const menuItems = useMemo(
+    () => [
+      { name: 'Home', path: '/' },
+      { name: 'Courses', path: '/course' },
+      { name: 'About', path: '/about' },
+      { name: 'Contact', path: '/contact' },
+    ],
+    []
+  );
 
-  const itemVariants = {
-    hidden: { opacity: 0, x: -50, transition: { duration: 0.2 } },
-    visible: {
-      opacity: 1,
-      x: 0,
-      transition: { duration: 0.3, type: 'spring', stiffness: 100 },
-    },
-  };
-
-  const hamburgerVariants = {
-    closed: { rotate: 0, scale: 1 },
-    open: {
-      rotate: 90,
-      scale: 1.2,
-      transition: { duration: 0.3, type: 'spring' },
-    },
+  const handleNavigation = (path) => {
+    navigate(path);
   };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 backdrop-blur-sm shadow-md">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md shadow-sm">
       <div className="container mx-auto flex justify-between items-center p-4">
-        {/* Logo */}
         <div
           className="flex items-center space-x-2 cursor-pointer"
           onClick={() => navigate('/')}
@@ -62,107 +41,41 @@ const Navbar = () => {
           <h1 className="text-2xl font-bold text-gray-800">LearnHub</h1>
         </div>
 
-        {/* Desktop Menu */}
-        <NavigationMenu className="hidden md:flex">
-          <NavigationMenuList className="space-x-4">
-            {[
-              { name: 'Courses', path: '/courses' },
-              { name: 'About', path: '/about' },
-              { name: 'Contact', path: '/contact' },
-            ].map((item) => (
-              <NavigationMenuItem key={item.name}>
-                <NavigationMenuLink
-                  onClick={() => navigate(item.path)}
-                  className={navigationMenuTriggerStyle()}
-                >
-                  {item.name}
-                </NavigationMenuLink>
-              </NavigationMenuItem>
-            ))}
-          </NavigationMenuList>
-        </NavigationMenu>
-
-        {/* Desktop Auth Buttons */}
+        <DesktopNav menuItems={menuItems} onNavigate={handleNavigation} />
         <div className="hidden md:flex space-x-4">
-          <Button variant="outline" onClick={() => navigate('/login')}>
+          <Button
+            variant="outline"
+            onClick={() => navigate('/login')}
+            aria-label="Login"
+          >
             Login
           </Button>
-          <Button onClick={() => navigate('/signup')}>Sign Up</Button>
+          <Button onClick={() => navigate('/signup')} aria-label="Sign Up">
+            Sign Up
+          </Button>
         </div>
 
-        <motion.div
-          className="md:hidden"
-          animate={isMenuOpen ? 'open' : 'closed'}
-          variants={hamburgerVariants}
-        >
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-          >
-            {isMenuOpen ? <X /> : <Menu />}
-          </Button>
-        </motion.div>
+        <Sheet>
+          <SheetTrigger asChild className="md:hidden">
+            <Button variant="outline" size="icon" aria-label="Open mobile menu">
+              <Menu className="h-6 w-6" />
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="left" className="w-full sm:w-[300px]">
+            <SheetHeader>
+              <SheetTitle className="flex items-center space-x-2">
+                <GraduationCap className="text-blue-600" size={24} />
+                <span>LearnHub</span>
+              </SheetTitle>
+            </SheetHeader>
+            <MobileNav menuItems={menuItems} onNavigate={handleNavigation} />
+            <AuthButtons
+              onLogin={() => navigate('/login')}
+              onSignUp={() => navigate('/signup')}
+            />
+          </SheetContent>
+        </Sheet>
       </div>
-
-      <AnimatePresence>
-        {isMenuOpen && (
-          <motion.div
-            initial="hidden"
-            animate="visible"
-            exit="hidden"
-            variants={containerVariants}
-            className="md:hidden overflow-hidden bg-white shadow-lg"
-          >
-            <NavigationMenu className="w-full cursor-pointer">
-              <NavigationMenuList className="flex-col items-stretch space-y-2 p-4 ">
-                {[
-                  { name: 'Courses', path: '/courses' },
-                  { name: 'About', path: '/about' },
-                  { name: 'Contact', path: '/contact' },
-                ].map((item) => (
-                  <motion.div
-                    key={item.name}
-                    variants={itemVariants}
-                    className="w-full"
-                  >
-                    <NavigationMenuItem className="w-full">
-                      <NavigationMenuLink
-                        onClick={() => {
-                          navigate(item.path);
-                          setIsMenuOpen(false);
-                        }}
-                        className="block w-full py-3 text-center hover:bg-gray-100 rounded-lg transition-colors"
-                      >
-                        {item.name}
-                      </NavigationMenuLink>
-                    </NavigationMenuItem>
-                  </motion.div>
-                ))}
-
-                <motion.div
-                  variants={itemVariants}
-                  className="flex space-x-4 w-full"
-                >
-                  <Button
-                    variant="outline"
-                    className="w-full"
-                    onClick={() => navigate('/login')}
-                  >
-                    Login
-                  </Button>
-                  <Button
-                    className="w-full"
-                    onClick={() => navigate('/signup')}
-                  >
-                    Sign Up
-                  </Button>
-                </motion.div>
-              </NavigationMenuList>
-            </NavigationMenu>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </nav>
   );
 };
