@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { GraduationCap, Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -9,12 +9,14 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet';
-import DesktopNav from './navigation/DesktopNav';
-import MobileNav from '../components/navigation/MobileNav';
+import DesktopNav from './Navigation/DesktopNav';
+import MobileNav from './Navigation/MobileNav';
 import AuthButtons from './AuthButton/AuthButtons';
 
 const Navbar = () => {
   const navigate = useNavigate();
+
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const menuItems = useMemo(
     () => [
@@ -28,6 +30,7 @@ const Navbar = () => {
 
   const handleNavigation = (path) => {
     navigate(path);
+    setIsMenuOpen(false);
   };
 
   return (
@@ -55,19 +58,23 @@ const Navbar = () => {
           </Button>
         </div>
 
-        <Sheet>
+        <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
           <SheetTrigger asChild className="md:hidden">
             <Button variant="outline" size="icon" aria-label="Open mobile menu">
               <Menu className="h-6 w-6" />
             </Button>
           </SheetTrigger>
-          <SheetContent side="left" className="w-full sm:w-[300px]">
+          <SheetContent
+            side="left"
+            className="w-[250px] sm:w-[300px] p-4 bg-white shadow-md border-r transition-all duration-300 ease-in-out"
+          >
             <SheetHeader>
               <SheetTitle className="flex items-center space-x-2">
                 <GraduationCap className="text-blue-600" size={24} />
                 <span>LearnHub</span>
               </SheetTitle>
             </SheetHeader>
+
             <MobileNav menuItems={menuItems} onNavigate={handleNavigation} />
             <AuthButtons
               onLogin={() => navigate('/login')}

@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
-import AuthLayout from './layout/AuthLayout';
+import AuthLayout from './Layout/AuthLayout';
 import { User, AtSign, Lock, Github, ExternalLink } from 'lucide-react';
 
 const Signup = () => {

@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { AtSign, Lock, Github, ExternalLink } from 'lucide-react';
-import AuthLayout from './layout/AuthLayout';
+import AuthLayout from './Layout/AuthLayout';
 
 const Login = () => {
   const [email, setEmail] = useState('');
