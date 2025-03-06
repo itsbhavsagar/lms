@@ -21,7 +21,7 @@ const categories = [
         direction: 'right-to-left',
       },
       {
-        src: 'https://logodix.com/logo/2090013.jpg',
+        src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Javascript_badge.svg/640px-Javascript_badge.svg.png',
         alt: 'React logo',
         direction: 'right-to-left',
       },
@@ -42,8 +42,11 @@ const categories = [
         direction: 'right-to-left',
       },
       {
-        src: 'https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/google-tensorflow-icon.png',
-        alt: 'Machine learning model',
+        src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Microsoft_Office_Excel_%282019%E2%80%93present%29.svg/640px-Microsoft_Office_Excel_%282019%E2%80%93present%29.svg.png',
+        direction: 'left-to-right',
+      },
+      {
+        src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/Tensorflow_logo.svg/640px-Tensorflow_logo.svg.png',
         direction: 'left-to-right',
       },
     ],
@@ -58,12 +61,13 @@ const categories = [
       'https://images.unsplash.com/photo-1444653614773-995cb1ef9efa?q=80&w=2952&auto=format&fit=crop',
     floatingImages: [
       {
-        src: '/api/placeholder/200/150',
+        src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Microsoft_Office_Excel_%282019%E2%80%93present%29.svg/640px-Microsoft_Office_Excel_%282019%E2%80%93present%29.svg.png',
+
         alt: 'Business meeting',
         direction: 'left-to-right',
       },
       {
-        src: '/api/placeholder/180/140',
+        src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Microsoft_Office_Outlook_%282018%E2%80%93present%29.svg/640px-Microsoft_Office_Outlook_%282018%E2%80%93present%29.svg.png',
         alt: 'Financial chart',
         direction: 'right-to-left',
       },
@@ -79,12 +83,12 @@ const categories = [
       'https://media.istockphoto.com/id/2008262446/photo/digital-marketing-concept.webp?a=1&b=1&s=612x612&w=0&k=20&c=6AJ2SK3SXqZTaknqkHFKDrSdqOwKc-SZ4QllDk-LdOQ=',
     floatingImages: [
       {
-        src: '/api/placeholder/200/150',
+        src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Search_Engine_Optimized_Logo.png/640px-Search_Engine_Optimized_Logo.png',
         alt: 'Social media dashboard',
         direction: 'right-to-left',
       },
       {
-        src: '/api/placeholder/180/140',
+        src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Logo_Google_Analytics.svg/640px-Logo_Google_Analytics.svg.png',
         alt: 'Marketing funnel',
         direction: 'left-to-right',
       },
@@ -100,12 +104,12 @@ const categories = [
       'https://plus.unsplash.com/premium_photo-1666739032615-ecbd14dfb543?q=80&w=2940&auto=format&fit=crop',
     floatingImages: [
       {
-        src: '/api/placeholder/200/150',
+        src: 'https://static.vecteezy.com/system/resources/previews/002/159/401/non_2x/language-translation-icon-free-vector.jpg',
         alt: 'Language translation',
         direction: 'left-to-right',
       },
       {
-        src: '/api/placeholder/180/140',
+        src: 'https://www.shutterstock.com/shutterstock/photos/1994361164/display_1500/stock-vector-language-learning-logo-design-template-language-learning-school-logo-design-language-learning-1994361164.jpg',
         alt: 'World map',
         direction: 'right-to-left',
       },
@@ -121,12 +125,12 @@ const categories = [
       'https://images.unsplash.com/photo-1627850604058-52e40de1b847?w=900&auto=format&fit=crop&q=60',
     floatingImages: [
       {
-        src: '/api/placeholder/200/150',
+        src: 'https://w7.pngwing.com/pngs/636/709/png-transparent-productivity-management-time-management-efficiency-schedule-business-3d-icon.png',
         alt: 'Task management',
         direction: 'right-to-left',
       },
       {
-        src: '/api/placeholder/180/140',
+        src: 'https://cdn-icons-png.flaticon.com/512/7264/7264364.png',
         alt: 'Time tracking',
         direction: 'left-to-right',
       },
