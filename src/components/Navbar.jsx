@@ -112,7 +112,7 @@ const Navbar = () => {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true); // Prevents hydration mismatch
+    setMounted(true);
   }, []);
 
   const menuItems = useMemo(
@@ -146,7 +146,6 @@ const Navbar = () => {
         <DesktopNav menuItems={menuItems} onNavigate={handleNavigation} />
 
         <div className="hidden md:flex space-x-4 items-center">
-          {/* Theme Switcher */}
           {mounted && (
             <Button
               variant="outline"

@@ -32,7 +32,6 @@ const CourseInfo = () => {
   return (
     <div className="container mx-auto p-6">
       <div className="flex flex-col md:flex-row gap-8">
-        {/* Left Side: Course Details */}
         <div className="w-full md:w-2/3 space-y-6">
           <div className="bg-gray-100 rounded-lg overflow-hidden">
             <img
@@ -94,7 +93,6 @@ const CourseInfo = () => {
           </Card>
         </div>
 
-        {/* Right Side: Purchase Options */}
         <div className="w-full md:w-1/3 space-y-6">
           <Card>
             <CardHeader>

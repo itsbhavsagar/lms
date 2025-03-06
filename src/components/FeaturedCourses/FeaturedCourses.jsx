@@ -1,4 +1,10 @@
-import React, { useRef, useState, useEffect, useCallback } from 'react';
+import React, {
+  useRef,
+  useState,
+  useEffect,
+  useCallback,
+  useMemo,
+} from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Star,
@@ -19,113 +25,157 @@ import {
 } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 
-const CoursePreview = React.memo(({ course, position, containerWidth }) => {
-  const previewRef = useRef(null);
-  const [previewPlacement, setPreviewPlacement] = useState('right');
+const useMobileDetect = () => {
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    if (!previewRef.current) return;
-    const cardIndex = position % 4;
-    setPreviewPlacement(cardIndex === 3 ? 'left' : 'right');
-  }, [position, containerWidth]);
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
 
-  return (
-    <motion.div
-      ref={previewRef}
-      initial={{
-        opacity: 0,
-        x: previewPlacement === 'right' ? 20 : -20,
-        scale: 0.96,
-      }}
-      animate={{ opacity: 1, x: 0, scale: 1 }}
-      exit={{
-        opacity: 0,
-        x: previewPlacement === 'right' ? 10 : -10,
-        scale: 0.96,
-      }}
-      transition={{ duration: 0.2 }}
-      className={`absolute top-0 z-30 w-64 bg-white rounded-lg shadow-xl border border-gray-200 ${
-        previewPlacement === 'right' ? 'left-full ml-4' : 'right-full mr-4'
-      }`}
-    >
-      <div className="p-4 space-y-3">
-        <div>
-          <h3 className="font-bold text-md">{course.title}</h3>
-          <p className="text-sm text-gray-700 mt-1">{course.description}</p>
-        </div>
-        <div className="space-y-2">
-          <div className="flex items-center text-sm">
-            <Clock className="h-4 w-4 mr-2 text-gray-500" />
-            <span>8 weeks • 24 lessons</span>
+    checkMobile();
+
+    window.addEventListener('resize', checkMobile);
+
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  return isMobile;
+};
+
+const CoursePreview = React.memo(
+  ({ course, position, containerWidth }) => {
+    const previewRef = useRef(null);
+    const [previewPlacement, setPreviewPlacement] = useState('right');
+
+    useEffect(() => {
+      if (!previewRef.current) return;
+      const cardIndex = position % 4;
+      setPreviewPlacement(cardIndex === 3 ? 'left' : 'right');
+    }, [position]);
+
+    return (
+      <motion.div
+        ref={previewRef}
+        initial={{
+          opacity: 0,
+          x: previewPlacement === 'right' ? 20 : -20,
+          scale: 0.96,
+        }}
+        animate={{ opacity: 1, x: 0, scale: 1 }}
+        exit={{
+          opacity: 0,
+          x: previewPlacement === 'right' ? 10 : -10,
+          scale: 0.96,
+        }}
+        transition={{ duration: 0.2 }}
+        className={`absolute top-0 z-30 w-64 bg-white rounded-lg shadow-xl border border-gray-200 ${
+          previewPlacement === 'right' ? 'left-full ml-4' : 'right-full mr-4'
+        }`}
+      >
+        <div className="p-4 space-y-3">
+          <div>
+            <h3 className="font-bold text-md">{course.title}</h3>
+            <p className="text-sm text-gray-700 mt-1">{course.description}</p>
           </div>
-          <div className="flex items-center text-sm">
-            <Award className="h-4 w-4 mr-2 text-gray-500" />
-            <span>Certificate upon completion</span>
+          <div className="space-y-2">
+            <div className="flex items-center text-sm">
+              <Clock className="h-4 w-4 mr-2 text-gray-500" />
+              <span>8 weeks • 24 lessons</span>
+            </div>
+            <div className="flex items-center text-sm">
+              <Award className="h-4 w-4 mr-2 text-gray-500" />
+              <span>Certificate upon completion</span>
+            </div>
+            <div className="flex items-center text-sm">
+              <Users className="h-4 w-4 mr-2 text-gray-500" />
+              <span>{course.students.toLocaleString()} enrolled students</span>
+            </div>
           </div>
-          <div className="flex items-center text-sm">
-            <Users className="h-4 w-4 mr-2 text-gray-500" />
-            <span>{course.students.toLocaleString()} enrolled students</span>
+          <div className="border-t pt-2">
+            <h4 className="font-medium text-sm mb-2">What you'll learn:</h4>
+            <ul className="text-xs space-y-1">
+              <li className="flex items-start">
+                <span className="text-green-500 mr-1">✓</span> Hands-on projects
+                for real-world experience
+              </li>
+              <li className="flex items-start">
+                <span className="text-green-500 mr-1">✓</span> Access to
+                exclusive community forums
+              </li>
+              <li className="flex items-start">
+                <span className="text-green-500 mr-1">✓</span> One-on-one
+                feedback from experts
+              </li>
+            </ul>
           </div>
         </div>
-        <div className="border-t pt-2">
-          <h4 className="font-medium text-sm mb-2">What you'll learn:</h4>
-          <ul className="text-xs space-y-1">
-            <li className="flex items-start">
-              <span className="text-green-500 mr-1">✓</span> Hands-on projects
-              for real-world experience
-            </li>
-            <li className="flex items-start">
-              <span className="text-green-500 mr-1">✓</span> Access to exclusive
-              community forums
-            </li>
-            <li className="flex items-start">
-              <span className="text-green-500 mr-1">✓</span> One-on-one feedback
-              from experts
-            </li>
-          </ul>
-        </div>
-      </div>
-    </motion.div>
-  );
-});
+      </motion.div>
+    );
+  },
+  (prevProps, nextProps) => {
+    return (
+      prevProps.course.id === nextProps.course.id &&
+      prevProps.position === nextProps.position &&
+      prevProps.containerWidth === nextProps.containerWidth
+    );
+  }
+);
 
 const LazyLoadedCourseCard = React.memo(
   ({ course, index, isVisible, containerWidth }) => {
     const [showPreview, setShowPreview] = useState(false);
     const cardRef = useRef(null);
+    const isMobile = useMobileDetect();
 
-    const cardVariants = {
-      hidden: { opacity: 0, y: 50 },
-      visible: {
-        opacity: 1,
-        y: 0,
-        transition: {
-          duration: 0.5,
-          type: 'spring',
-          stiffness: 100,
-          delay: index * 0.1,
+    const cardVariants = useMemo(
+      () => ({
+        hidden: { opacity: 0, y: 50 },
+        visible: {
+          opacity: 1,
+          y: 0,
+          transition: {
+            duration: 0.5,
+            type: 'spring',
+            stiffness: 100,
+            delay: index * 0.1,
+          },
         },
-      },
-      hover: {
-        scale: 1.03,
-        zIndex: 10,
-        boxShadow:
-          '0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04)',
-        transition: {
-          duration: 0.2,
-          ease: 'easeOut',
+        hover: {
+          scale: 1.03,
+          zIndex: 10,
+          boxShadow:
+            '0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04)',
+          transition: {
+            duration: 0.2,
+            ease: 'easeOut',
+          },
         },
-      },
-    };
+      }),
+      [index]
+    );
 
-    const imageVariants = {
-      hidden: { opacity: 0, scale: 1.2 },
-      visible: {
-        opacity: 1,
-        scale: 1,
-        transition: { duration: 0.8 },
-      },
-    };
+    const imageVariants = useMemo(
+      () => ({
+        hidden: { opacity: 0, scale: 1.2 },
+        visible: {
+          opacity: 1,
+          scale: 1,
+          transition: { duration: 0.8 },
+        },
+      }),
+      []
+    );
+
+    const handleHoverStart = useCallback(() => {
+      if (!isMobile) {
+        setShowPreview(true);
+      }
+    }, [isMobile]);
+
+    const handleHoverEnd = useCallback(() => {
+      setShowPreview(false);
+    }, []);
 
     return (
       <motion.div
@@ -135,11 +185,11 @@ const LazyLoadedCourseCard = React.memo(
         animate={isVisible ? 'visible' : 'hidden'}
         whileHover="hover"
         variants={cardVariants}
-        onHoverStart={() => setShowPreview(true)}
-        onHoverEnd={() => setShowPreview(false)}
+        onHoverStart={handleHoverStart}
+        onHoverEnd={handleHoverEnd}
       >
         <AnimatePresence>
-          {showPreview && (
+          {showPreview && !isMobile && (
             <CoursePreview
               course={course}
               position={index}
@@ -226,99 +276,16 @@ const LazyLoadedCourseCard = React.memo(
         </Card>
       </motion.div>
     );
+  },
+  (prevProps, nextProps) => {
+    return (
+      prevProps.course.id === nextProps.course.id &&
+      prevProps.index === nextProps.index &&
+      prevProps.isVisible === nextProps.isVisible &&
+      prevProps.containerWidth === nextProps.containerWidth
+    );
   }
 );
-
-const featuredCourses = [
-  {
-    id: 1,
-    title: 'Web Development Masterclass',
-    instructor: 'John Smith',
-    level: 'Intermediate',
-    rating: 4.8,
-    students: 5200,
-    icon: <TrendingUp className="text-blue-600" size={24} />,
-    description:
-      'Master modern web technologies and build responsive applications.',
-    image:
-      'https://images.unsplash.com/photo-1547658719-da2b51169166?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-    tag: 'paid',
-    price: '$89.99',
-  },
-  {
-    id: 2,
-    title: 'Data Science Fundamentals',
-    instructor: 'Emily Chen',
-    level: 'Beginner',
-    rating: 4.7,
-    students: 4800,
-    icon: <BookOpen className="text-green-600" size={24} />,
-    description:
-      'Learn data analysis, visualization, and machine learning basics.',
-    image:
-      'https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-    tag: 'free',
-    price: '$0.00',
-  },
-  {
-    id: 3,
-    title: 'Advanced Python Programming',
-    instructor: 'Michael Johnson',
-    level: 'Advanced',
-    rating: 4.9,
-    students: 6100,
-    icon: <Star className="text-yellow-500" size={24} />,
-    description:
-      'Deep dive into advanced Python concepts and software engineering.',
-    image:
-      'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-    tag: 'paid',
-    price: '$129.99',
-  },
-  {
-    id: 4,
-    title: 'UI/UX Design Principles',
-    instructor: 'Sarah Williams',
-    level: 'Intermediate',
-    rating: 4.6,
-    students: 3800,
-    icon: <BookOpen className="text-purple-600" size={24} />,
-    description:
-      'Learn modern design principles and create stunning user interfaces.',
-    image:
-      'https://images.unsplash.com/photo-1561070791-2526d30994b5?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-    tag: 'paid',
-    price: '$79.99',
-  },
-  {
-    id: 5,
-    title: 'Mobile App Development',
-    instructor: 'David Lee',
-    level: 'Intermediate',
-    rating: 4.7,
-    students: 4200,
-    icon: <TrendingUp className="text-red-600" size={24} />,
-    description: 'Build native mobile apps for iOS and Android platforms.',
-    image:
-      'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-    tag: 'paid',
-    price: '$99.99',
-  },
-  {
-    id: 6,
-    title: 'Blockchain Fundamentals',
-    instructor: 'Robert Wilson',
-    level: 'Beginner',
-    rating: 4.5,
-    students: 3500,
-    icon: <BookOpen className="text-orange-600" size={24} />,
-    description: 'Learn blockchain technology and cryptocurrency fundamentals.',
-    image:
-      'https://images.unsplash.com/photo-1639762681057-408e52192e55?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-    tag: 'paid',
-    price: '$79.99',
-  },
-];
 
 const FeaturedCoursesSection = () => {
   const sectionRef = useRef(null);
@@ -332,6 +299,102 @@ const FeaturedCoursesSection = () => {
   const observerRefs = useRef({});
   const scrollListenerRef = useRef(null);
   const activeObserversRef = useRef({});
+  const resizeTimerRef = useRef(null);
+
+  const featuredCourses = useMemo(
+    () => [
+      {
+        id: 1,
+        title: 'Web Development Masterclass',
+        instructor: 'John Smith',
+        level: 'Intermediate',
+        rating: 4.8,
+        students: 5200,
+        icon: <TrendingUp className="text-blue-600" size={24} />,
+        description:
+          'Master modern web technologies and build responsive applications.',
+        image:
+          'https://images.unsplash.com/photo-1547658719-da2b51169166?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+        tag: 'paid',
+        price: '$89.99',
+      },
+      {
+        id: 2,
+        title: 'Data Science Fundamentals',
+        instructor: 'Emily Chen',
+        level: 'Beginner',
+        rating: 4.7,
+        students: 4800,
+        icon: <BookOpen className="text-green-600" size={24} />,
+        description:
+          'Learn data analysis, visualization, and machine learning basics.',
+        image:
+          'https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+        tag: 'free',
+        price: '$0.00',
+      },
+      {
+        id: 3,
+        title: 'Advanced Python Programming',
+        instructor: 'Michael Johnson',
+        level: 'Advanced',
+        rating: 4.9,
+        students: 6100,
+        icon: <Star className="text-yellow-500" size={24} />,
+        description:
+          'Deep dive into advanced Python concepts and software engineering.',
+        image:
+          'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+        tag: 'paid',
+        price: '$129.99',
+      },
+      {
+        id: 4,
+        title: 'UI/UX Design Principles',
+        instructor: 'Sarah Williams',
+        level: 'Intermediate',
+        rating: 4.6,
+        students: 3800,
+        icon: <BookOpen className="text-purple-600" size={24} />,
+        description:
+          'Learn modern design principles and create stunning user interfaces.',
+        image:
+          'https://images.unsplash.com/photo-1561070791-2526d30994b5?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+        tag: 'paid',
+        price: '$79.99',
+      },
+      {
+        id: 5,
+        title: 'Mobile App Development',
+        instructor: 'David Lee',
+        level: 'Intermediate',
+        rating: 4.7,
+        students: 4200,
+        icon: <TrendingUp className="text-red-600" size={24} />,
+        description: 'Build native mobile apps for iOS and Android platforms.',
+        image:
+          'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+        tag: 'paid',
+        price: '$99.99',
+      },
+      {
+        id: 6,
+        title: 'Blockchain Fundamentals',
+        instructor: 'Robert Wilson',
+        level: 'Beginner',
+        rating: 4.5,
+        students: 3500,
+        icon: <BookOpen className="text-orange-600" size={24} />,
+        description:
+          'Learn blockchain technology and cryptocurrency fundamentals.',
+        image:
+          'https://images.unsplash.com/photo-1639762681057-408e52192e55?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+        tag: 'paid',
+        price: '$79.99',
+      },
+    ],
+    []
+  );
 
   const updateWidthAndView = useCallback(() => {
     if (containerRef.current) {
@@ -353,7 +416,6 @@ const FeaturedCoursesSection = () => {
       resizeTimerRef.current = setTimeout(updateWidthAndView, 100);
     };
 
-    const resizeTimerRef = { current: null };
     window.addEventListener('resize', handleResize);
 
     return () => {
@@ -363,37 +425,43 @@ const FeaturedCoursesSection = () => {
   }, [updateWidthAndView]);
 
   const setupIntersectionObservers = useCallback(() => {
-    Object.entries(activeObserversRef.current).forEach(([id, observer]) => {
+    Object.values(activeObserversRef.current).forEach((observer) => {
       observer.disconnect();
     });
 
     activeObserversRef.current = {};
 
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const updatedVisibility = {};
+
+        entries.forEach((entry) => {
+          const id = entry.target.dataset.id;
+          if (id) {
+            updatedVisibility[id] = entry.isIntersecting;
+          }
+        });
+
+        if (Object.keys(updatedVisibility).length > 0) {
+          setVisibleCards((prev) => ({
+            ...prev,
+            ...updatedVisibility,
+          }));
+        }
+      },
+      { threshold: 0.1, rootMargin: '50px' }
+    );
+
     Object.entries(observerRefs.current).forEach(([id, element]) => {
-      if (!element) return;
-
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.target.dataset.id === id) {
-              setVisibleCards((prev) => ({
-                ...prev,
-                [id]: entry.isIntersecting,
-              }));
-            }
-          });
-        },
-        { threshold: 0.1 }
-      );
-
-      observer.observe(element);
-      activeObserversRef.current[id] = observer;
+      if (element) {
+        observer.observe(element);
+      }
     });
 
+    activeObserversRef.current.main = observer;
+
     return () => {
-      Object.values(activeObserversRef.current).forEach((observer) => {
-        observer.disconnect();
-      });
+      observer.disconnect();
     };
   }, []);
 
@@ -498,20 +566,23 @@ const FeaturedCoursesSection = () => {
 
       return scrollPercentage >= sectionStart && scrollPercentage <= sectionEnd;
     },
-    [scrollAmount, maxScroll]
+    [scrollAmount, maxScroll, featuredCourses.length]
   );
 
-  const headerVariants = {
-    hidden: { opacity: 0, y: 50 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.8,
-        ease: 'easeOut',
+  const headerVariants = useMemo(
+    () => ({
+      hidden: { opacity: 0, y: 50 },
+      visible: {
+        opacity: 1,
+        y: 0,
+        transition: {
+          duration: 0.8,
+          ease: 'easeOut',
+        },
       },
-    },
-  };
+    }),
+    []
+  );
 
   const handleIndicatorClick = useCallback(
     (index) => {
@@ -523,7 +594,7 @@ const FeaturedCoursesSection = () => {
         });
       }
     },
-    [maxScroll]
+    [maxScroll, featuredCourses.length]
   );
 
   return (

@@ -31,7 +31,6 @@ const Home = () => {
     },
   };
 
-  // Animation for floating effect
   const floatingAnimation = {
     y: [0, -15, 0],
     transition: {
@@ -121,14 +120,12 @@ const Home = () => {
               </motion.div>
             </div>
 
-            {/* Right Image */}
             <motion.div
               className="w-full lg:w-1/2 mt-12 lg:mt-0 px-4 sm:px-8 lg:px-4"
               variants={imageVariants}
               animate={['visible', floatingAnimation]}
             >
               <div className="relative">
-                {/* Background decorative elements */}
                 <motion.div
                   className="absolute w-64 h-64 rounded-full bg-blue-100 opacity-30 -top-8 -right-8 z-0"
                   animate={{
@@ -157,7 +154,6 @@ const Home = () => {
                   }}
                 />
 
-                {/* Main image with shadow and border */}
                 <motion.div
                   className="relative z-10 rounded-xl overflow-hidden shadow-2xl border-4 border-white"
                   whileHover={{ scale: 1.03 }}
@@ -168,11 +164,9 @@ const Home = () => {
                     className="w-auto h-auto object-cover"
                   />
 
-                  {/* Overlay gradient for depth */}
                   <div className="absolute inset-0 bg-gradient-to-tr from-blue-900/20 to-transparent pointer-events-none" />
                 </motion.div>
 
-                {/* Decorative elements */}
                 <motion.div
                   className="absolute top-6 -left-3 z-20 bg-white rounded-lg shadow-lg p-3"
                   animate={{
