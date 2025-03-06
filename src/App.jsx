@@ -8,11 +8,11 @@ import {
 import { ThemeProvider } from 'next-themes';
 import Home from './components/Home';
 import Dashboard from './components/Dashboard/Dashboard';
-import CoursesPage from './components/Courses';
+import CoursesPage from './components/Courses/Courses';
 import CourseInfo from './components/CourseInfo';
 import Layout from './components/Layout';
 import Login from './components/Login';
-import Signup from './components/Signup';
+import Signup from './components/SignUp';
 import Footer from './components/Footer/Footer';
 
 const App = () => {

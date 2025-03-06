@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { ChevronRight } from 'lucide-react';
-import Courses from './Courses';
+import Courses from './Courses/Courses';
 
 const Home = () => {
   const navigate = useNavigate();
