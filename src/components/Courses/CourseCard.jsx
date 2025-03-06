@@ -14,7 +14,6 @@ import { Badge } from '@/components/ui/badge';
 const CourseCard = ({ course }) => {
   const navigate = useNavigate();
 
-  // Create variants for hover animation
   const cardVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0 },
@@ -26,7 +25,6 @@ const CourseCard = ({ course }) => {
     },
   };
 
-  // Function to format price
   const formatPrice = (price) => {
     if (price === 0) return 'Free';
     return `$${price.toFixed(2)}`;

@@ -17,12 +17,10 @@ const Courses = () => {
     duration: 'all',
   });
 
-  // Simulate data fetching
   useEffect(() => {
     const fetchData = async () => {
-      // In a real app, this would be an API call
       setIsLoading(true);
-      // Simulate network delay
+
       await new Promise((resolve) => setTimeout(resolve, 800));
       setCoursesData(sampleCoursesData);
       setIsLoading(false);
@@ -31,11 +29,9 @@ const Courses = () => {
     fetchData();
   }, []);
 
-  // Group courses by category
   const coursesByCategory = React.useMemo(() => {
     if (!coursesData.length) return {};
 
-    // Filter courses based on selected filters
     const filteredCourses = coursesData.filter((course) => {
       const matchesSearch =
         course.title.toLowerCase().includes(filters.search.toLowerCase()) ||
@@ -64,18 +60,15 @@ const Courses = () => {
     }, {});
   }, [coursesData, filters]);
 
-  // Load more logic with intersection observer
   const { ref: loadMoreRef, inView } = useInView({
     threshold: 0.1,
     triggerOnce: false,
   });
 
-  // Load more categories logic
   const [visibleCategories, setVisibleCategories] = useState(2);
 
   useEffect(() => {
     if (inView && Object.keys(coursesByCategory).length > visibleCategories) {
-      // Add delay to simulate loading more categories
       const timer = setTimeout(() => {
         setVisibleCategories((prev) => prev + 1);
       }, 500);

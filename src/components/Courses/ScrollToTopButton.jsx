@@ -5,7 +5,6 @@ import { ArrowUp } from 'lucide-react';
 const ScrollToTopButton = () => {
   const [isVisible, setIsVisible] = useState(false);
 
-  // Show button when page is scrolled down
   const toggleVisibility = () => {
     if (window.pageYOffset > 500) {
       setIsVisible(true);
@@ -14,13 +13,11 @@ const ScrollToTopButton = () => {
     }
   };
 
-  // Set the scroll event listener
   useEffect(() => {
     window.addEventListener('scroll', toggleVisibility);
     return () => window.removeEventListener('scroll', toggleVisibility);
   }, []);
 
-  // Scroll to top handler
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
