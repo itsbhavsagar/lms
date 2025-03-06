@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Star, Clock, BarChart, BookOpen, Check, Download } from 'lucide-react';
 import courses from '@/data/coursesData';
 
-const CourseDetailPage = () => {
+const CourseInfo = () => {
   const { courseId } = useParams();
   const course = courses.find((c) => c.id === courseId);
   const [selectedPlan, setSelectedPlan] = useState('oneTime');
@@ -32,6 +32,7 @@ const CourseDetailPage = () => {
   return (
     <div className="container mx-auto p-6">
       <div className="flex flex-col md:flex-row gap-8">
+        {/* Left Side: Course Details */}
         <div className="w-full md:w-2/3 space-y-6">
           <div className="bg-gray-100 rounded-lg overflow-hidden">
             <img
@@ -93,6 +94,7 @@ const CourseDetailPage = () => {
           </Card>
         </div>
 
+        {/* Right Side: Purchase Options */}
         <div className="w-full md:w-1/3 space-y-6">
           <Card>
             <CardHeader>
@@ -147,4 +149,4 @@ const CourseDetailPage = () => {
   );
 };
 
-export default CourseDetailPage;
+export default CourseInfo;

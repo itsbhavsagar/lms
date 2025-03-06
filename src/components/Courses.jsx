@@ -13,7 +13,7 @@ import { Button } from '@/components/ui/button';
 import { Star, BookOpen, Clock } from 'lucide-react';
 import courses from '@/data/coursesData';
 
-const CoursesPage = () => {
+const Courses = () => {
   const navigate = useNavigate();
   const [expandedCategories, setExpandedCategories] = useState({});
 
@@ -79,7 +79,7 @@ const CoursesPage = () => {
         <CardFooter>
           <Button
             className="w-full"
-            onClick={() => navigate(`/course/${course.id}`)}
+            onClick={() => navigate(`/courses/${course.id}`)}
           >
             <BookOpen className="mr-2" size={16} />
             Enroll Now
@@ -91,7 +91,10 @@ const CoursesPage = () => {
 
   return (
     <div className="container mx-auto mt-20 p-6">
-      <h1 className="text-3xl font-bold mb-8 text-center">
+      <h1
+        className="text-3xl font-bold mb-8 text-center"
+        onClick={() => navigate('/courses/2')}
+      >
         Explore Our Courses
       </h1>
 
@@ -121,4 +124,4 @@ const CoursesPage = () => {
   );
 };
 
-export default CoursesPage;
+export default Courses;
