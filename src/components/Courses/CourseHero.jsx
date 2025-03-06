@@ -12,7 +12,7 @@ const CourseHero = () => {
           transition={{ duration: 0.8 }}
           className="text-center"
         >
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 mt-10">
             Unlock Your Potential
           </h1>
           <p className="text-lg md:text-xl opacity-90 mb-8 max-w-3xl mx-auto">
