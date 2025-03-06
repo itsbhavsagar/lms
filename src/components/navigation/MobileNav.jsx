@@ -1,30 +1,53 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
+import { ChevronRight } from 'lucide-react';
 
-const MobileNav = ({ menuItems, onNavigate }) => (
-  <div className="grid gap-4 py-4">
-    {menuItems.map((item, index) => (
-      <motion.div
-        key={item.name}
-        initial={{ opacity: 0, x: -20 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{
-          delay: index * 0.1,
-          type: 'spring',
-          stiffness: 300,
-        }}
-      >
-        <Button
-          variant="ghost"
-          className="w-full justify-start"
-          onClick={() => onNavigate(item.path)}
-        >
-          {item.name}
-        </Button>
-      </motion.div>
-    ))}
-  </div>
-);
+const MobileNav = ({ menuItems, onNavigate }) => {
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { x: -30, opacity: 0 },
+    visible: {
+      x: 0,
+      opacity: 1,
+      transition: {
+        type: 'spring',
+        stiffness: 300,
+        damping: 24,
+      },
+    },
+  };
+
+  return (
+    <motion.div
+      className="grid gap-2"
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+    >
+      {menuItems.map((item) => (
+        <motion.div key={item.name} variants={itemVariants} className="w-full">
+          <Button
+            variant="ghost"
+            className="w-full justify-between text-left px-2 py-1 h-auto"
+            onClick={() => onNavigate(item.path)}
+          >
+            <span>{item.name}</span>
+            <ChevronRight size={16} />
+          </Button>
+        </motion.div>
+      ))}
+    </motion.div>
+  );
+};
 
 export default MobileNav;
