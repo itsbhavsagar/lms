@@ -301,7 +301,6 @@ const FeaturedCoursesSection = () => {
           </div>
         </motion.div>
 
-        {/* Right Arrow Button */}
         <motion.button
           className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full shadow-lg p-2 -mr-2 hidden md:flex items-center justify-center w-10 h-10"
           onClick={scrollRight}
@@ -314,10 +313,6 @@ const FeaturedCoursesSection = () => {
         >
           <ChevronRight size={24} className="text-blue-600" />
         </motion.button>
-
-        {/* Mobile fading edges */}
-        <div className="absolute right-0 bottom-14 bg-gradient-to-l from-white via-white to-transparent w-16 h-12 pointer-events-none md:hidden" />
-        <div className="absolute left-0 bottom-14 bg-gradient-to-r from-white via-white to-transparent w-16 h-12 pointer-events-none md:hidden" />
       </div>
 
       <motion.div

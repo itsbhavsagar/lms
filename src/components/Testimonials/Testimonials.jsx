@@ -125,7 +125,7 @@ const TestimonialsSection = () => {
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.6 }}
-          className="text-3xl font-bold mb-4"
+          className="text-4xl font-bold mb-4 bg-gradient-to-r from-indigo-600 to-blue-500  bg-clip-text text-transparent"
         >
           What Our Learners Say
         </motion.h2>
@@ -141,6 +141,10 @@ const TestimonialsSection = () => {
       </div>
 
       <div className="relative">
+        <div className="absolute inset-0 overflow-hidden opacity-10">
+          <div className="absolute -right-16 -top-16 w-48 h-48 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full blur-xl"></div>
+          <div className="absolute -left-16 -bottom-16 w-56 h-56 bg-gradient-to-tr from-yellow-500 to-green-500 rounded-full blur-xl"></div>
+        </div>
         <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-gray-50 to-transparent z-10" />
 
         <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-gray-50 to-transparent z-10" />
@@ -238,28 +242,6 @@ const TestimonialsSection = () => {
         >
           <ChevronRight size={24} />
         </button>
-
-        {/* Navigation dots */}
-        <div className="flex justify-center space-x-2 mt-6">
-          {testimonials.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => {
-                setActiveIndex(index);
-                if (scrollContainerRef.current) {
-                  scrollContainerRef.current.scrollTo({
-                    left: index * (isMobile ? 288 : 384),
-                    behavior: 'smooth',
-                  });
-                }
-              }}
-              className={`h-2 rounded-full transition-all ${
-                activeIndex === index ? 'w-6 bg-blue-500' : 'w-2 bg-gray-300'
-              }`}
-              aria-label={`Go to testimonial ${index + 1}`}
-            />
-          ))}
-        </div>
       </div>
 
       <style jsx>{`

@@ -50,7 +50,7 @@ const CourseCard = ({ course }) => {
             src={course.image}
             alt={course.title}
             className="w-full h-48 object-cover transition-transform duration-700 hover:scale-105"
-            loading="lazy" // Native lazy loading
+            loading="lazy"
           />
 
           <div className="absolute bottom-0 left-0 w-full h-12 bg-gradient-to-t from-black/60 to-transparent" />

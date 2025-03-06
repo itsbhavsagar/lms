@@ -10,6 +10,14 @@ import {
 
 const LearningCategoriesSection = () => {
   const scrollContainerRef = useRef(null);
+  const motivationVariants = {
+    hidden: { opacity: 0, x: -20 },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: { duration: 0.5, ease: 'easeOut' },
+    },
+  };
 
   return (
     <section className="container mx-auto px-4 py-12 bg-gray-50 overflow-hidden relative">
@@ -23,33 +31,46 @@ const LearningCategoriesSection = () => {
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="text-center lg:text-left mb-6 lg:mb-8"
+          className="text-center mb-6 lg:mb-8"
         >
-          <h2 className="text-3xl text-center font-bold mb-3 tracking-tight bg-gradient-to-b from-black to-[#001E80] bg-clip-text text-transparent">
+          <h2 className="text-4xl font-bold mb-3 tracking-tight bg-gradient-to-r from-indigo-600 to-blue-500  bg-clip-text text-transparent">
             Learning Categories
           </h2>
-          <p className="text-[#010D3E] tracking-tight max-w-md mx-auto lg:mx-0">
+          <p className="text-[#010D3E] tracking-tight max-w-md mx-auto">
             Explore diverse learning paths tailored to your professional and
             personal growth.
           </p>
         </motion.div>
 
-        <div className="flex flex-col lg:flex-row">
-          <div className="lg:w-1/4 lg:pr-8 hidden lg:block">
+        <div className="flex flex-col lg:flex-row gap-6">
+          <motion.div
+            className="lg:w-1/4 hidden lg:block"
+            variants={motivationVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
             <div className="sticky top-24">
-              <p className="text-sm text-[#010D3E] tracking-tight mb-4">
-                Browse through our curated selection of courses designed to help
-                you advance your career or explore new interests.
+              <h3 className="text-xl font-semibold text-[#010D3E] mb-3">
+                Ignite Your Future
+              </h3>
+              <p className="text-sm text-[#010D3E] tracking-tight mb-4 leading-relaxed">
+                Unlock your potential with courses crafted to elevate your
+                skills and fuel your career. Whether you're starting out or
+                leveling up, your journey to success begins here.
               </p>
               <motion.button
-                whileHover={{ scale: 1.05 }}
+                whileHover={{
+                  scale: 1.05,
+                  boxShadow: '0 4px 10px rgba(0,0,0,0.1)',
+                }}
                 whileTap={{ scale: 0.95 }}
                 className="px-5 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium"
               >
                 View All Categories
               </motion.button>
             </div>
-          </div>
+          </motion.div>
 
           <div className="lg:w-3/4">
             <div className="lg:hidden relative">
@@ -96,7 +117,6 @@ const LearningCategoriesSection = () => {
               </div>
             </div>
 
-            {/* Desktop Grid */}
             <div className="hidden lg:grid lg:grid-cols-3 gap-5">
               {categories.map((category, index) => (
                 <CategoryCard
@@ -110,10 +130,12 @@ const LearningCategoriesSection = () => {
               ))}
             </div>
 
-            {/* Mobile Button */}
-            <div className="mt-8 text-center lg:hidden">
+            <div className="mt-6 text-center lg:hidden">
               <motion.button
-                whileHover={{ scale: 1.05 }}
+                whileHover={{
+                  scale: 1.05,
+                  boxShadow: '0 4px 10px rgba(0,0,0,0.1)',
+                }}
                 whileTap={{ scale: 0.95 }}
                 className="px-5 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium"
               >
