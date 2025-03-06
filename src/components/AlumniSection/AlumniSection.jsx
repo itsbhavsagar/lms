@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { motion, useAnimation } from 'framer-motion';
 import alumniCompanyLogos from '../../data/alumniCompanyLogos';
+import { useTheme } from '@/context/ThemeContext';
 
 const leftImage = {
   src: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=2940&auto=format&fit=crop',
@@ -8,6 +9,7 @@ const leftImage = {
 };
 
 const AlumniLogoSection = () => {
+  const { theme } = useTheme();
   const containerRef = useRef(null);
   const scrollXControl = useAnimation();
 
@@ -69,13 +71,17 @@ const AlumniLogoSection = () => {
   );
 
   return (
-    <div className="py-16 overflow-hidden ">
+    <div
+      className={`py-16 overflow-hidden ${
+        theme === 'dark' ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'
+      }`}
+    >
       <div className="max-w-7xl mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-extrabold bg-gradient-to-r from-indigo-600 to-blue-500  bg-clip-text text-transparent mb-2">
             Our Alumni Work At Top Companies
           </h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
+          <p className="text-gray-600 dark:text-gray-200 max-w-2xl mx-auto">
             Join thousands of successful graduates who have landed positions at
             the world's most innovative companies.
           </p>
@@ -95,7 +101,6 @@ const AlumniLogoSection = () => {
             />
           </motion.div>
 
-          {/* Logo Slider */}
           <div
             ref={containerRef}
             className="relative overflow-hidden w-full md:w-2/3"

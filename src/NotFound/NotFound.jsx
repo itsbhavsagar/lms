@@ -84,7 +84,7 @@ const NotFound = () => {
           variants={itemVariants}
         >
           You've gone where no coder has gone before! Let’s find our way back to
-          Earth (Homepage).
+          Earth.
         </motion.p>
 
         {/* Button */}

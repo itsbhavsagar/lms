@@ -6,8 +6,11 @@ import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import AuthLayout from './layout/AuthLayout';
 import { User, AtSign, Lock, Github, ExternalLink } from 'lucide-react';
+import { useTheme } from '@/context/ThemeContext';
 
 const Signup = () => {
+  const { theme } = useTheme();
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -19,9 +22,7 @@ const Signup = () => {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-      },
+      transition: { staggerChildren: 0.1 },
     },
   };
 
@@ -30,10 +31,7 @@ const Signup = () => {
     visible: {
       opacity: 1,
       y: 0,
-      transition: {
-        type: 'spring',
-        stiffness: 100,
-      },
+      transition: { type: 'spring', stiffness: 100 },
     },
   };
 
@@ -60,7 +58,9 @@ const Signup = () => {
         initial="hidden"
         animate="visible"
         variants={containerVariants}
-        className=" max-w-md mx-auto p-8 space-y-6 bg-white rounded-xl shadow-lg"
+        className={`max-w-md mx-auto p-8 space-y-6 rounded-xl shadow-lg transition-colors duration-300 ${
+          theme === 'dark' ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'
+        }`}
       >
         <motion.h2
           variants={itemVariants}
@@ -88,7 +88,11 @@ const Signup = () => {
                 placeholder="Enter your full name"
                 value={formData.name}
                 onChange={handleChange}
-                className="pl-10"
+                className={`pl-10 ${
+                  theme === 'dark'
+                    ? 'bg-gray-800 text-white border-gray-700'
+                    : ''
+                }`}
                 required
               />
             </div>
@@ -108,7 +112,11 @@ const Signup = () => {
                 placeholder="Enter your email"
                 value={formData.email}
                 onChange={handleChange}
-                className="pl-10"
+                className={`pl-10 ${
+                  theme === 'dark'
+                    ? 'bg-gray-800 text-white border-gray-700'
+                    : ''
+                }`}
                 required
               />
             </div>
@@ -128,7 +136,11 @@ const Signup = () => {
                 placeholder="Create a password"
                 value={formData.password}
                 onChange={handleChange}
-                className="pl-10"
+                className={`pl-10 ${
+                  theme === 'dark'
+                    ? 'bg-gray-800 text-white border-gray-700'
+                    : ''
+                }`}
                 required
               />
             </div>
@@ -148,7 +160,11 @@ const Signup = () => {
                 placeholder="Confirm your password"
                 value={formData.confirmPassword}
                 onChange={handleChange}
-                className="pl-10"
+                className={`pl-10 ${
+                  theme === 'dark'
+                    ? 'bg-gray-800 text-white border-gray-700'
+                    : ''
+                }`}
                 required
               />
             </div>
@@ -164,10 +180,22 @@ const Signup = () => {
         <motion.div variants={itemVariants}>
           <Separator className="my-4" />
           <div className="flex space-x-4 justify-center">
-            <Button variant="outline" size="icon">
+            <Button
+              variant="outline"
+              size="icon"
+              className={
+                theme === 'dark' ? 'border-gray-900 text-gray-300' : ''
+              }
+            >
               <ExternalLink className="h-5 w-5" />
             </Button>
-            <Button variant="outline" size="icon">
+            <Button
+              variant="outline"
+              size="icon"
+              className={
+                theme === 'dark' ? 'border-gray-600 text-gray-300' : ''
+              }
+            >
               <Github className="h-5 w-5" />
             </Button>
           </div>

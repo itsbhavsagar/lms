@@ -1,4 +1,3 @@
-// src/App.jsx
 import React from 'react';
 import {
   BrowserRouter as Router,
@@ -6,7 +5,7 @@ import {
   Route,
   useLocation,
 } from 'react-router-dom';
-import { ThemeProvider } from 'next-themes';
+import { ThemeProvider } from './context/ThemeContext';
 import Dashboard from './components/Dashboard/Dashboard';
 import CoursesPage from './components/Courses/Courses';
 import CourseInfo from './components/CourseInfo';
@@ -41,7 +40,7 @@ const AppContent = () => {
 };
 
 const App = () => (
-  <ThemeProvider attribute="class" defaultTheme="light">
+  <ThemeProvider>
     <Router>
       <AppContent />
     </Router>

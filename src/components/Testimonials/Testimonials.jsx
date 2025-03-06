@@ -1,8 +1,11 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { Quote, ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
-
+import { useTheme } from '@/context/ThemeContext';
 const TestimonialsSection = () => {
+  const { theme } = useTheme();
+  const isDarkMode = theme === 'dark';
+
   const testimonials = [
     {
       name: 'Sarah Johnson',
@@ -118,7 +121,9 @@ const TestimonialsSection = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.8 }}
-      className="relative container mx-auto px-4 py-16  overflow-hidden"
+      className={`relative container mx-auto px-4 py-16 overflow-hidden ${
+        isDarkMode ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'
+      }`}
     >
       <div className="text-center mb-12">
         <motion.h2
@@ -133,25 +138,21 @@ const TestimonialsSection = () => {
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="text-gray-600 max-w-2xl mx-auto"
+          className="text-gray-600 dark:text-gray-200 max-w-2xl mx-auto"
         >
           Hear from professionals at top tech companies who have transformed
           their careers with our learning platform.
         </motion.p>
       </div>
-
       <div className="relative">
         <div className="absolute inset-0 overflow-hidden opacity-10">
           <div className="absolute -right-16 -top-16 w-48 h-48 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full blur-xl"></div>
           <div className="absolute -left-16 -bottom-16 w-56 h-56 bg-gradient-to-tr from-yellow-500 to-green-500 rounded-full blur-xl"></div>
         </div>
-        <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-gray-50 to-transparent z-10" />
-
-        <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-gray-50 to-transparent z-10" />
 
         <button
           onClick={() => scroll('left')}
-          className="absolute left-4 top-1/2 -translate-y-1/2 z-20 bg-white rounded-full p-2 shadow-md hover:bg-gray-100 transition-colors"
+          className="absolute left-4 top-1/2 -translate-y-1/2 z-20  rounded-full p-2 shadow-md hover:bg-gray-100 dark:bg-gray-800 transition-colors"
           aria-label="Scroll left"
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
@@ -170,7 +171,7 @@ const TestimonialsSection = () => {
           {testimonials.map((testimonial, index) => (
             <motion.div
               key={testimonial.name}
-              className={`bg-white p-6 rounded-lg shadow-lg relative flex-shrink-0 ${
+              className={` p-6 rounded-lg shadow-lg relative flex-shrink-0 ${
                 isMobile ? 'w-72' : 'w-96'
               }`}
               initial={{ opacity: 0, scale: 0.9 }}
@@ -193,12 +194,12 @@ const TestimonialsSection = () => {
                 transition={{ duration: 0.8 }}
               >
                 <Quote
-                  className="absolute top-4 left-4 text-blue-100"
+                  className="absolute top-4 left-4 text-blue-100 dark:text-gray-200"
                   size={48}
                 />
               </motion.div>
               <div className="text-center">
-                <p className="italic mb-6 relative z-10 text-gray-700">
+                <p className="italic mb-6 relative z-10 text-gray-700 dark:text-gray-200">
                   &ldquo;{testimonial.quote}&rdquo;
                 </p>
                 <motion.div
@@ -211,16 +212,16 @@ const TestimonialsSection = () => {
                     whileHover={{ scale: 1.1 }}
                     src={testimonial.image}
                     alt={testimonial.name}
-                    className={`rounded-full object-cover border-2 border-blue-100 ${
+                    className={`rounded-full object-cover border-2 border-blue-100 dark:border-white  ${
                       isMobile ? 'w-12 h-12' : 'w-16 h-16'
                     }`}
                   />
                   <div className="text-left">
-                    <h4 className="font-semibold text-blue-900">
+                    <h4 className="font-semibold text-blue-900 dark:text-gray-200">
                       {testimonial.name}
                     </h4>
                     <p
-                      className={`text-gray-500 ${
+                      className={`text-gray-500 dark:text-gray-300 ${
                         isMobile ? 'text-xs' : 'text-sm'
                       }`}
                     >
@@ -235,7 +236,7 @@ const TestimonialsSection = () => {
 
         <button
           onClick={() => scroll('right')}
-          className="absolute right-4 top-1/2 -translate-y-1/2 z-20 bg-white rounded-full p-2 shadow-md hover:bg-gray-100 transition-colors"
+          className="absolute right-4 top-1/2 -translate-y-1/2 z-20 bg-white dark:bg-gray-800 rounded-full p-2 shadow-md hover:bg-gray-100 transition-colors"
           aria-label="Scroll right"
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
@@ -243,7 +244,6 @@ const TestimonialsSection = () => {
           <ChevronRight size={24} />
         </button>
       </div>
-
       <style jsx>{`
         .scrollbar-hide::-webkit-scrollbar {
           display: none;

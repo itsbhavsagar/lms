@@ -14,7 +14,7 @@ const DesktopNav = ({ menuItems, onNavigate }) => {
           <NavigationMenuItem key={item.name}>
             <NavigationMenuLink
               onClick={() => onNavigate(item.path)}
-              className="px-3 py-2 hover:bg-gray-100 rounded-md transition-colors"
+              className="px-3 py-2 hover:bg-gray-100 rounded-md transition-colors dark:text-white dark:hover:text-black"
             >
               {item.name}
             </NavigationMenuLink>

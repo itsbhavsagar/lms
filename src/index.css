@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+
+body {
+  @apply bg-white text-black dark:bg-gray-900 dark:text-white;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -66,3 +71,5 @@
     @apply bg-background text-foreground;
   }
 }
+
+

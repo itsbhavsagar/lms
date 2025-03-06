@@ -1,7 +1,7 @@
 import React, { useMemo, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { GraduationCap, Menu, Sun, Moon } from 'lucide-react';
-import { useTheme } from 'next-themes';
+import { useTheme } from '../context/ThemeContext';
 import { Button } from '@/components/ui/button';
 import {
   Sheet,
@@ -17,7 +17,7 @@ import AuthButtons from './AuthButton/AuthButtons';
 const Navbar = () => {
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { theme, setTheme, resolvedTheme } = useTheme();
+  const { theme, toggleTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -59,12 +59,10 @@ const Navbar = () => {
             <Button
               variant="outline"
               size="icon"
-              onClick={() =>
-                setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')
-              }
+              onClick={toggleTheme}
               aria-label="Toggle Theme"
             >
-              {resolvedTheme === 'dark' ? (
+              {theme === 'dark' ? (
                 <Sun className="h-5 w-5 text-yellow-400" />
               ) : (
                 <Moon className="h-5 w-5 text-gray-800" />

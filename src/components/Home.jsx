@@ -4,9 +4,11 @@ import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { ChevronRight } from 'lucide-react';
 import Courses from './Courses/Courses';
+import { useTheme } from '@/context/ThemeContext';
 
 const Home = () => {
   const navigate = useNavigate();
+  const { theme } = useTheme();
 
   const heroVariants = {
     hidden: { opacity: 0, y: 50 },
@@ -43,7 +45,13 @@ const Home = () => {
 
   return (
     <>
-      <div className=" md:mt-12 mt-12 bg-[radial-gradient(ellipse_200%_100%_at_bottom_left,#183EC2,#EAEEFE_66%)]">
+      <div
+        className={`md:mt-12 mt-12 ${
+          theme === 'dark'
+            ? 'bg-gray-900 text-white'
+            : 'bg-[radial-gradient(ellipse_200%_100%_at_bottom_left,#183EC2,#EAEEFE_66%)]'
+        }`}
+      >
         <motion.header
           initial="hidden"
           animate="visible"
@@ -66,7 +74,7 @@ const Home = () => {
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 transition={{ delay: 0.2, duration: 0.8, ease: 'easeOut' }}
               >
-                <span className="tracking-tight bg-gradient-to-b from-black to-[#001E80] bg-clip-text text-transparent">
+                <span className="tracking-tight bg-gradient-to-b from-black to-[#001E80] bg-clip-text text-transparent dark:text-white">
                   Learn Anything, Anytime, Anywhere
                 </span>
                 <motion.div
@@ -78,7 +86,7 @@ const Home = () => {
               </motion.h1>
 
               <motion.p
-                className="text-base sm:text-lg text-[#010D3E] tracking-tight mb-6 sm:mb-8 max-w-2xl mx-auto lg:mx-0 leading-relaxed"
+                className="text-base sm:text-lg text-[#010D3E] tracking-tight mb-6 sm:mb-8 max-w-2xl mx-auto lg:mx-0 leading-relaxed dark:text-gray-300"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4, duration: 0.8, ease: 'easeOut' }}
@@ -127,7 +135,7 @@ const Home = () => {
             >
               <div className="relative">
                 <motion.div
-                  className="absolute w-64 h-64 rounded-full bg-blue-100 opacity-30 -top-8 -right-8 z-0"
+                  className="absolute w-64 h-64 rounded-full bg-blue-200 opacity-30 -top-8 -right-8 z-0"
                   animate={{
                     scale: [1, 1.2, 1],
                     rotate: [0, 10, 0],
@@ -140,9 +148,9 @@ const Home = () => {
                   }}
                 />
                 <motion.div
-                  className="absolute w-32 h-32 rounded-full bg-indigo-100 opacity-40 bottom-12 -left-4 z-0"
+                  className="absolute w-32 h-32 rounded-full bg-indigo-200 opacity-40 bottom-12 -left-4 z-0"
                   animate={{
-                    scale: [1, 1.3, 1],
+                    scale: [2, 1.3, 1],
                     rotate: [0, -15, 0],
                     opacity: [0.4, 0.6, 0.4],
                   }}
@@ -162,6 +170,7 @@ const Home = () => {
                   <img
                     src="https://images.pexels.com/photos/1181671/pexels-photo-1181671.jpeg?auto=compress&cs=tinysrgb&w=1200"
                     className="w-auto h-auto object-cover"
+                    loading="lazy"
                   />
 
                   <div className="absolute inset-0 bg-gradient-to-tr from-blue-900/20 to-transparent pointer-events-none" />

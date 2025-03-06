@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import { useTheme } from '@/context/ThemeContext';
 import {
   Star,
   BookOpen,
@@ -20,6 +21,7 @@ import {
 import { Badge } from '@/components/ui/badge';
 
 const FeaturedCoursesSection = () => {
+  const { theme } = useTheme();
   const scrollRef = useRef(null);
 
   const navigate = useNavigate();
@@ -186,17 +188,19 @@ const FeaturedCoursesSection = () => {
 
   return (
     <motion.section
-      className="container mx-auto px-4 py-12 overflow-hidden"
+      className={`container mx-auto px-4 py-12 overflow-hidden ${
+        theme === 'dark' ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'
+      }`}
       variants={containerVariants}
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.2 }}
     >
       <motion.div className="text-center mb-8" variants={headerVariants}>
-        <h2 className="text-3xl font-bold mb-3 bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+        <h2 className="text-4xl font-bold mb-3 bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
           Unlock Your Potential
         </h2>
-        <p className="text-gray-600 max-w-2xl mx-auto">
+        <p className="text-gray-600 dark:text-gray-200 max-w-2xl mx-auto">
           Every journey to mastery begins with a single step. Discover courses
           that will transform your skills and open new doors of opportunity.
         </p>
@@ -268,10 +272,10 @@ const FeaturedCoursesSection = () => {
 
                   <CardContent className="flex-grow py-0">
                     <div className="space-y-3">
-                      <p className="text-xs text-gray-500 line-clamp-2">
+                      <p className="text-xs text-gray-500 dark:text-gray-200 line-clamp-2">
                         {course.description}
                       </p>
-                      <div className="flex justify-between text-xs text-gray-500">
+                      <div className="flex justify-between text-xs text-gray-500 dark:text-gray-200">
                         <span className="flex items-center">
                           <Tag className="h-3 w-3 mr-1" />
                           {course.level}
@@ -289,7 +293,7 @@ const FeaturedCoursesSection = () => {
 
                   <CardFooter className="pt-2 pb-3">
                     <Button
-                      className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 text-sm py-1"
+                      className="w-full dark:text-gray-200 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 text-sm py-1"
                       size="sm"
                     >
                       Explore Course

@@ -4,6 +4,7 @@ import { Check, Lock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { learningPaths } from '../../data/paths.js';
+import { useTheme } from '@/context/ThemeContext.jsx';
 
 const techIcons = {
   'Web Development': [
@@ -26,9 +27,12 @@ const leftContent = {
 };
 
 const LearningPathSection = () => {
+  const { theme } = useTheme();
   const [selectedPath, setSelectedPath] = useState(
     Object.keys(learningPaths)[0]
   );
+
+  const isDarkMode = theme === 'dark';
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -59,7 +63,11 @@ const LearningPathSection = () => {
   };
 
   return (
-    <section className="container mx-auto px-4 py-12 bg-gray-50">
+    <section
+      className={`container mx-auto px-4 py-12 ${
+        isDarkMode ? 'bg-gray-900 text-white' : 'bg-gray-50 text-gray-900'
+      }`}
+    >
       <div className="flex flex-col lg:flex-row gap-6">
         <motion.div
           className="lg:w-1/2 relative"
@@ -88,10 +96,18 @@ const LearningPathSection = () => {
             className="mt-4 text-center lg:text-left"
             variants={itemVariants}
           >
-            <h2 className="text-2xl font-bold text-gray-800 mb-2">
+            <h2
+              className={`text-2xl font-bold ${
+                isDarkMode ? 'text-white' : 'text-gray-800'
+              } mb-2`}
+            >
               {leftContent.heading}
             </h2>
-            <p className="text-base text-gray-600 italic">
+            <p
+              className={`text-base italic ${
+                isDarkMode ? 'text-gray-300' : 'text-gray-600'
+              }`}
+            >
               {leftContent.quote}
             </p>
           </motion.div>
@@ -104,9 +120,9 @@ const LearningPathSection = () => {
           whileInView="visible"
           viewport={{ once: true }}
         >
-          <div className="bg-white p-4 rounded-lg shadow-md">
+          <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md">
             <motion.h3
-              className="text-xl font-semibold mb-4 text-gray-800"
+              className="text-xl font-semibold mb-4 text-gray-800 dark:text-white"
               variants={itemVariants}
             >
               {selectedPath}
@@ -114,13 +130,12 @@ const LearningPathSection = () => {
 
             <div className="flex flex-wrap gap-2 mb-4">
               {Object.keys(learningPaths).map((path) => (
-                <Button
+                <motion.button
                   key={path}
-                  variant={selectedPath === path ? 'default' : 'outline'}
-                  className={`py-1 px-3 text-sm rounded-full ${
+                  className={`py-1 px-3 text-sm rounded-full transition-all ${
                     selectedPath === path
                       ? 'bg-blue-600 text-white'
-                      : 'text-gray-600 hover:bg-gray-100'
+                      : 'text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700'
                   }`}
                   onClick={() => setSelectedPath(path)}
                   whileHover={{
@@ -130,7 +145,7 @@ const LearningPathSection = () => {
                   whileTap={{ scale: 0.95 }}
                 >
                   {path}
-                </Button>
+                </motion.button>
               ))}
             </div>
 
@@ -144,7 +159,7 @@ const LearningPathSection = () => {
               {learningPaths[selectedPath].map((course, index) => (
                 <motion.div
                   key={course.title}
-                  className="flex items-center space-x-3 bg-gray-100 p-3 rounded-md hover:bg-gray-200"
+                  className="flex items-center space-x-3 bg-gray-100 dark:bg-gray-700 p-3 rounded-md hover:bg-gray-200 dark:hover:bg-gray-600"
                   custom={index}
                   variants={courseVariants}
                   whileHover={{ boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
@@ -154,23 +169,32 @@ const LearningPathSection = () => {
                       <div className="flex items-center space-x-2">
                         <span
                           className={`text-sm font-medium ${
-                            course.completed ? 'text-gray-800' : 'text-gray-500'
+                            course.completed
+                              ? 'text-gray-800 dark:text-white'
+                              : 'text-gray-500 dark:text-gray-400'
                           }`}
                         >
                           {course.title}
                         </span>
-                        {techIcons[selectedPath] && (
-                          <motion.img
-                            src={
-                              techIcons[selectedPath][
-                                index % techIcons[selectedPath].length
-                              ].src
-                            }
-                            alt="Tech icon"
-                            className="h-5 w-5 object-contain"
-                            variants={techIconVariants}
-                          />
-                        )}
+                        {techIcons[selectedPath] &&
+                          techIcons[selectedPath][
+                            index % techIcons[selectedPath].length
+                          ] && (
+                            <motion.img
+                              src={
+                                techIcons[selectedPath][
+                                  index % techIcons[selectedPath].length
+                                ].src
+                              }
+                              alt={
+                                techIcons[selectedPath][
+                                  index % techIcons[selectedPath].length
+                                ].alt
+                              }
+                              className="h-5 w-5 object-contain"
+                              variants={techIconVariants}
+                            />
+                          )}
                       </div>
                       {course.completed ? (
                         <Check className="text-green-500" size={16} />
@@ -187,14 +211,7 @@ const LearningPathSection = () => {
               ))}
             </motion.div>
 
-            <motion.div
-              className="mt-4 text-center"
-              whileHover={{
-                scale: 1.05,
-                boxShadow: '0 4px 10px rgba(0,0,0,0.1)',
-              }}
-              whileTap={{ scale: 0.95 }}
-            >
+            <motion.div className="mt-4 text-center">
               <Button className="bg-blue-600 hover:bg-blue-700 text-white py-1 px-4 text-sm rounded-full">
                 Start Now
               </Button>
