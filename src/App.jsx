@@ -23,15 +23,15 @@ const AppContent = () => {
     !noFooterRoutes.includes(location.pathname) && !isCourseInfoPage;
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className='flex flex-col min-h-screen'>
       <Routes>
         <Route element={<Layout />}>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/course" element={<CoursesPage />} />
-          <Route path="/courses/:id" element={<CourseInfo />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="*" element={<NotFound />} />
+          <Route path='/' element={<Dashboard />} />
+          <Route path='/course' element={<CoursesPage />} />
+          <Route path='/courses/:id' element={<CourseInfo />} />
+          <Route path='/login' element={<Login />} />
+          <Route path='/signup' element={<Signup />} />
+          <Route path='*' element={<NotFound />} />
         </Route>
       </Routes>
       {showFooter && <Footer />}
