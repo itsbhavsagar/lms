@@ -125,12 +125,12 @@ const TestimonialsSection = () => {
         isDarkMode ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'
       }`}
     >
-      <div className="text-center mb-12">
+      <div className='text-center mb-12'>
         <motion.h2
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.6 }}
-          className="text-4xl font-bold mb-4 bg-gradient-to-r from-indigo-600 to-blue-500  bg-clip-text text-transparent"
+          className='text-4xl font-bold mb-4 bg-gradient-to-r from-indigo-600 to-blue-500  bg-clip-text text-transparent'
         >
           What Our Learners Say
         </motion.h2>
@@ -138,22 +138,22 @@ const TestimonialsSection = () => {
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="text-gray-600 dark:text-gray-200 max-w-2xl mx-auto"
+          className='text-gray-600 dark:text-gray-200 max-w-2xl mx-auto'
         >
           Hear from professionals at top tech companies who have transformed
           their careers with our learning platform.
         </motion.p>
       </div>
-      <div className="relative">
-        <div className="absolute inset-0 overflow-hidden opacity-10">
-          <div className="absolute -right-16 -top-16 w-48 h-48 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full blur-xl"></div>
-          <div className="absolute -left-16 -bottom-16 w-56 h-56 bg-gradient-to-tr from-yellow-500 to-green-500 rounded-full blur-xl"></div>
+      <div className='relative'>
+        <div className='absolute inset-0 overflow-hidden opacity-10'>
+          <div className='absolute -right-16 -top-16 w-48 h-48 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full blur-xl'></div>
+          <div className='absolute -left-16 -bottom-16 w-56 h-56 bg-gradient-to-tr from-yellow-500 to-green-500 rounded-full blur-xl'></div>
         </div>
 
         <button
           onClick={() => scroll('left')}
-          className="absolute left-4 top-1/2 -translate-y-1/2 z-20  rounded-full p-2 shadow-md hover:bg-gray-100 dark:bg-gray-800 transition-colors"
-          aria-label="Scroll left"
+          className='absolute left-4 top-1/2 -translate-y-1/2 z-20  rounded-full p-2 shadow-md hover:bg-gray-100 dark:bg-gray-800 transition-colors'
+          aria-label='Scroll left'
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
         >
@@ -162,7 +162,7 @@ const TestimonialsSection = () => {
 
         <div
           ref={scrollContainerRef}
-          className="flex overflow-x-auto pb-6 pt-2 gap-6 scrollbar-hide"
+          className='flex overflow-x-auto pb-6 pt-2 gap-6 scrollbar-hide'
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
           onTouchStart={() => setIsPaused(true)}
@@ -194,16 +194,16 @@ const TestimonialsSection = () => {
                 transition={{ duration: 0.8 }}
               >
                 <Quote
-                  className="absolute top-4 left-4 text-blue-100 dark:text-gray-200"
+                  className='absolute top-4 left-4 text-blue-100 dark:text-gray-200'
                   size={48}
                 />
               </motion.div>
-              <div className="text-center">
-                <p className="italic mb-6 relative z-10 text-gray-700 dark:text-gray-200">
+              <div className='text-center'>
+                <p className='italic mb-6 relative z-10 text-gray-700 dark:text-gray-200'>
                   &ldquo;{testimonial.quote}&rdquo;
                 </p>
                 <motion.div
-                  className="flex items-center justify-center space-x-4 mt-6"
+                  className='flex items-center justify-center space-x-4 mt-6'
                   initial={{ y: 20, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: 0.3, duration: 0.5 }}
@@ -216,8 +216,8 @@ const TestimonialsSection = () => {
                       isMobile ? 'w-12 h-12' : 'w-16 h-16'
                     }`}
                   />
-                  <div className="text-left">
-                    <h4 className="font-semibold text-blue-900 dark:text-gray-200">
+                  <div className='text-left'>
+                    <h4 className='font-semibold text-blue-900 dark:text-gray-200'>
                       {testimonial.name}
                     </h4>
                     <p
@@ -236,8 +236,8 @@ const TestimonialsSection = () => {
 
         <button
           onClick={() => scroll('right')}
-          className="absolute right-4 top-1/2 -translate-y-1/2 z-20 bg-white dark:bg-gray-800 rounded-full p-2 shadow-md hover:bg-gray-100 transition-colors"
-          aria-label="Scroll right"
+          className='absolute right-4 top-1/2 -translate-y-1/2 z-20 bg-white dark:bg-gray-800 rounded-full p-2 shadow-md hover:bg-gray-100 transition-colors'
+          aria-label='Scroll right'
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
         >
