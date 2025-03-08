@@ -6,6 +6,7 @@ import CourseHero from './CourseHero';
 import CategorySection from './CategorySection';
 import FilterBar from './FilterBar';
 import axios from 'axios';
+import API_BASE_URL from '../config/api';
 
 const Courses = () => {
   const [coursesData, setCoursesData] = useState([]);
@@ -21,18 +22,15 @@ const Courses = () => {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        const response = await axios.get(
-          `${API_BASE_URL}/api/auth/login/api/courses`,
-          {
-            params: {
-              search: filters.search,
-              minPrice: filters.priceRange[0],
-              maxPrice: filters.priceRange[1],
-              rating: filters.rating,
-              duration: filters.duration,
-            },
-          }
-        );
+        const response = await axios.get(`${API_BASE_URL}/api/courses`, {
+          params: {
+            search: filters.search,
+            minPrice: filters.priceRange[0],
+            maxPrice: filters.priceRange[1],
+            rating: filters.rating,
+            duration: filters.duration,
+          },
+        });
         setCoursesData(response.data);
         setIsLoading(false);
       } catch (error) {

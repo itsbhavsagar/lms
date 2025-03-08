@@ -31,7 +31,7 @@ export const CartProvider = ({ children }) => {
     }
     try {
       const response = await axios.post(
-        `${API_BASE_URL}//api/cart/add`,
+        `${API_BASE_URL}/api/cart/add`, // Fixed double slash
         { courseId: course._id },
         { headers: { Authorization: `Bearer ${token}` } }
       );

@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import AuthLayout from './layout/AuthLayout';
-import API_BASE_URL from '../config/api';
+
 import {
   User,
   AtSign,
@@ -17,6 +17,7 @@ import {
 import { useTheme } from '@/context/ThemeContext';
 import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
+import API_BASE_URL from '../config/api';
 import { useNavigate } from 'react-router-dom';
 
 const Signup = () => {
