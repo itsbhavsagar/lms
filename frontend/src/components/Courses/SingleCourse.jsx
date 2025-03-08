@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Star, Clock, User, BookOpen } from 'lucide-react';
 import { useCart } from '../../context/CartContext.jsx';
 import axios from 'axios';
+import API_BASE_URL from '../../config/api';
 
 const SingleCourse = () => {
   const { id } = useParams();
