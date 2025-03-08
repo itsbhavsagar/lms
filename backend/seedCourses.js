@@ -12,12 +12,11 @@ mongoose
 const seedCourses = async () => {
   try {
     await Course.deleteMany({});
-    console.log('Existing courses deleted');
 
     const coursesToSeed = sampleCoursesData.map(({ id, ...course }) => course);
 
     await Course.insertMany(coursesToSeed);
-    console.log('Courses seeded successfully');
+
     process.exit();
   } catch (error) {
     console.error('Error seeding courses:', error);

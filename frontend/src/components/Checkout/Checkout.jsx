@@ -8,6 +8,7 @@ import {
   CheckCircle,
   ShoppingCart,
 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const Checkout = () => {
   const { cart, clearCart } = useCart();
@@ -15,30 +16,36 @@ const Checkout = () => {
   const [isComplete, setIsComplete] = useState(false);
   const [isOrderSummaryOpen, setIsOrderSummaryOpen] = useState(true);
   const [completedOrder, setCompletedOrder] = useState([]);
+  const navigate = useNavigate();
 
   const totalPrice = cart.reduce((total, course) => total + course.price, 0);
   const itemCount = cart.length;
 
-  const handlePayment = () => {
+  const handlePayment = async () => {
     setIsSubmitting(true);
-
     setCompletedOrder([...cart]);
 
-    setTimeout(() => {
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      await clearCart();
+
       setIsSubmitting(false);
       setIsComplete(true);
-      clearCart();
-    }, 2000);
+      navigate('/courses');
+    } catch (error) {
+      console.error('Checkout error:', error);
+      setIsSubmitting(false);
+      alert(
+        'Failed to complete checkout: ' + (error.message || 'Unknown error')
+      );
+    }
   };
 
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: {
-        when: 'beforeChildren',
-        staggerChildren: 0.1,
-      },
+      transition: { when: 'beforeChildren', staggerChildren: 0.1 },
     },
   };
 
@@ -167,7 +174,6 @@ const Checkout = () => {
                         />
                       </div>
                     </div>
-
                     <div>
                       <label className='block text-xs font-medium mb-1'>
                         Email Address
@@ -195,7 +201,6 @@ const Checkout = () => {
                         placeholder='1234 5678 9012 3456'
                       />
                     </div>
-
                     <div className='grid grid-cols-2 gap-3'>
                       <div>
                         <label className='block text-xs font-medium mb-1'>
@@ -310,7 +315,6 @@ const Checkout = () => {
               materials.
             </motion.p>
 
-            {/* Show order summary in success screen */}
             <motion.div
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
@@ -344,7 +348,10 @@ const Checkout = () => {
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.6 }}
             >
-              <Button className='bg-blue-600 hover:bg-blue-700 text-sm py-2'>
+              <Button
+                className='bg-blue-600 hover:bg-blue-700 text-sm py-2'
+                onClick={() => navigate('/courses')}
+              >
                 Go to My Courses
               </Button>
             </motion.div>

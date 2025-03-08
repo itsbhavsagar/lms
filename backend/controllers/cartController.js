@@ -5,11 +5,9 @@ export const addToCart = async (req, res, next) => {
   try {
     const { courseId } = req.body;
     const userId = req.user.id;
-    console.log('Adding course to cart:', courseId, 'for user:', userId);
 
     const user = await User.findById(userId);
     if (!user) {
-      console.log('User not found:', userId);
       return res.status(404).json({ message: 'User not found' });
     }
 
@@ -18,10 +16,9 @@ export const addToCart = async (req, res, next) => {
       await user.save();
     }
     const updatedUser = await User.findById(userId).populate('cart');
-    console.log('Updated cart after add:', updatedUser.cart);
+
     res.status(200).json(updatedUser.cart);
   } catch (error) {
-    console.error('Add to cart error:', error);
     next(error);
   }
 };
@@ -31,26 +28,19 @@ export const removeFromCart = async (req, res, next) => {
   try {
     const { courseId } = req.body;
     const userId = req.user.id;
-    console.log('Removing course from cart:', courseId, 'for user:', userId);
 
     const user = await User.findById(userId);
     if (!user) {
-      console.log('User not found:', userId);
       return res.status(404).json({ message: 'User not found' });
     }
 
-    console.log('Current cart before filter:', user.cart);
-
-    // Handle null values in cart
     user.cart = user.cart.filter((id) => id && id.toString() !== courseId);
-    console.log('Updated cart after filter:', user.cart);
 
     await user.save();
     const updatedUser = await User.findById(userId).populate('cart');
-    console.log('Populated cart after remove:', updatedUser.cart);
+
     res.status(200).json(updatedUser.cart);
   } catch (error) {
-    console.error('Remove from cart error:', error);
     next(error);
   }
 };
@@ -59,18 +49,33 @@ export const removeFromCart = async (req, res, next) => {
 export const getCart = async (req, res, next) => {
   try {
     const userId = req.user.id;
-    console.log('Fetching cart for user:', userId);
 
     const user = await User.findById(userId).populate('cart');
     if (!user) {
-      console.log('User not found:', userId);
       return res.status(404).json({ message: 'User not found' });
     }
 
-    console.log('Fetched cart:', user.cart);
     res.status(200).json(user.cart);
   } catch (error) {
-    console.error('Get cart error:', error);
+    next(error);
+  }
+};
+
+// Clear cart
+export const clearCart = async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    user.cart = [];
+    await user.save();
+
+    res.status(200).json([]);
+  } catch (error) {
     next(error);
   }
 };

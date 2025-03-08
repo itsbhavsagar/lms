@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { GraduationCap, Menu, Sun, Moon, ShoppingCart } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
 import { Button } from '@/components/ui/button';
 import {
   Sheet,
@@ -22,6 +23,7 @@ const Navbar = () => {
   const { theme, toggleTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const { cart } = useCart();
+  const { user, logout } = useAuth();
 
   useEffect(() => {
     setMounted(true);
@@ -124,23 +126,34 @@ const Navbar = () => {
               </div>
 
               <div className='grid gap-2 p-4 border-b border-gray-200 dark:border-gray-700'>
-                <Button
-                  variant='outline'
-                  className='w-full justify-center'
-                  onClick={() => {
-                    handleNavigation('/login');
-                  }}
-                >
-                  Login
-                </Button>
-                <Button
-                  className='w-full justify-center'
-                  onClick={() => {
-                    handleNavigation('/signup');
-                  }}
-                >
-                  Sign Up
-                </Button>
+                {user ? (
+                  <Button
+                    variant='outline'
+                    className='w-full justify-center'
+                    onClick={() => {
+                      logout();
+                      handleNavigation('/');
+                    }}
+                  >
+                    Logout
+                  </Button>
+                ) : (
+                  <>
+                    <Button
+                      variant='outline'
+                      className='w-full justify-center'
+                      onClick={() => handleNavigation('/login')}
+                    >
+                      Login
+                    </Button>
+                    <Button
+                      className='w-full justify-center'
+                      onClick={() => handleNavigation('/signup')}
+                    >
+                      Sign Up
+                    </Button>
+                  </>
+                )}
               </div>
 
               <div className='p-4 border-b border-gray-200 dark:border-gray-700'>
@@ -186,7 +199,6 @@ const Navbar = () => {
 
         <div className='hidden md:flex space-x-3 items-center'>
           <CartButton />
-
           {mounted && (
             <Button
               variant='outline'
@@ -201,17 +213,31 @@ const Navbar = () => {
               )}
             </Button>
           )}
-
-          <Button
-            variant='outline'
-            onClick={() => navigate('/login')}
-            aria-label='Login'
-          >
-            Login
-          </Button>
-          <Button onClick={() => navigate('/signup')} aria-label='Sign Up'>
-            Sign Up
-          </Button>
+          {user ? (
+            <Button
+              variant='outline'
+              onClick={() => {
+                logout();
+                navigate('/');
+              }}
+              aria-label='Logout'
+            >
+              Logout
+            </Button>
+          ) : (
+            <>
+              <Button
+                variant='outline'
+                onClick={() => navigate('/login')}
+                aria-label='Login'
+              >
+                Login
+              </Button>
+              <Button onClick={() => navigate('/signup')} aria-label='Sign Up'>
+                Sign Up
+              </Button>
+            </>
+          )}
         </div>
         <div className='md:hidden flex items-center'>
           <CartButton />

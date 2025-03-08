@@ -1,4 +1,3 @@
-// src/components/NotFound/NotFound.jsx
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
@@ -37,32 +36,32 @@ const NotFound = () => {
 
   return (
     <motion.div
-      className="min-h-screen flex items-center justify-center bg-[radial-gradient(ellipse_200%_100%_at_bottom_left,#183EC2,#EAEEFE_66%)] px-4 py-8"
+      className='min-h-screen flex items-center justify-center bg-[radial-gradient(ellipse_200%_100%_at_bottom_left,#183EC2,#EAEEFE_66%)] px-4 py-8'
       variants={containerVariants}
-      initial="hidden"
-      animate="visible"
+      initial='hidden'
+      animate='visible'
     >
-      <div className="text-center space-y-6 max-w-4xl mx-auto">
+      <div className='text-center space-y-6 max-w-4xl mx-auto'>
         <motion.div
-          className="relative mx-auto w-64 md:w-80 lg:w-96"
+          className='relative mx-auto w-64 md:w-80 lg:w-96'
           variants={imageVariants}
-          whileHover="hover"
+          whileHover='hover'
         >
           <img
             src={funnyImage}
-            alt="Confused astronaut with web tools"
-            className="w-full h-auto object-contain"
+            alt='Confused astronaut with web tools'
+            className='w-full h-auto object-contain'
           />
 
           <motion.div
-            className="absolute top-0 left-0 w-14 h-14 bg-yellow-200 rounded-full flex items-center justify-center text-xs font-bold text-gray-800"
+            className='absolute top-0 left-0 w-14 h-14 bg-yellow-200 rounded-full flex items-center justify-center text-xs font-bold text-gray-800'
             animate={{ y: [0, -10, 0], rotate: [0, 10, -10, 0] }}
             transition={{ repeat: Infinity, duration: 3 }}
           >
             JS
           </motion.div>
           <motion.div
-            className="absolute bottom-0 right-0 w-10 h-10 bg-lime-400 rounded-full flex items-center justify-center text-xs font-bold text-gray-800"
+            className='absolute bottom-0 right-0 w-10 h-10 bg-lime-400 rounded-full flex items-center justify-center text-xs font-bold text-gray-800'
             animate={{ y: [0, 10, 0], rotate: [0, -10, 10, 0] }}
             transition={{ repeat: Infinity, duration: 2.5, delay: 0.5 }}
           >
@@ -72,7 +71,7 @@ const NotFound = () => {
 
         {/* Heading */}
         <motion.h1
-          className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-800"
+          className='text-3xl md:text-4xl lg:text-5xl font-bold text-gray-800'
           variants={itemVariants}
         >
           404 - Lost in Space!
@@ -80,7 +79,7 @@ const NotFound = () => {
 
         {/* Message */}
         <motion.p
-          className="text-base md:text-lg text-gray-600 max-w-md mx-auto"
+          className='text-base md:text-lg text-gray-600 max-w-md mx-auto'
           variants={itemVariants}
         >
           You've gone where no coder has gone before! Let’s find our way back to
@@ -90,7 +89,7 @@ const NotFound = () => {
         {/* Button */}
         <motion.div variants={itemVariants}>
           <Button
-            className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-6 rounded-full flex items-center gap-2 mx-auto"
+            className='bg-blue-600 hover:bg-blue-700 text-white py-2 px-6 rounded-full flex items-center gap-2 mx-auto'
             onClick={() => navigate('/')}
             whileHover={{
               scale: 1.05,

@@ -5,6 +5,7 @@ const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
+
   useEffect(() => {
     const fetchCart = async () => {
       const token = localStorage.getItem('token');
@@ -57,8 +58,28 @@ export const CartProvider = ({ children }) => {
     }
   };
 
+  const clearCart = async () => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      alert('Please log in to clear cart');
+      return;
+    }
+    try {
+      const response = await axios.post(
+        'http://localhost:5001/api/cart/clear',
+        {},
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      setCart(response.data);
+    } catch (error) {
+      alert(error.response?.data?.message || 'Failed to clear cart');
+    }
+  };
+
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart }}>
+    <CartContext.Provider
+      value={{ cart, addToCart, removeFromCart, clearCart }}
+    >
       {children}
     </CartContext.Provider>
   );

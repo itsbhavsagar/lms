@@ -117,7 +117,7 @@ const CourseCard = ({ course }) => {
         <CardFooter className='p-4 pt-2'>
           <Button
             className='w-full'
-            onClick={() => navigate(`/courses/${course._id}`)} // Use _id instead of id
+            onClick={() => navigate(`/courses/${course._id}`)}
           >
             <BookOpen className='mr-2 h-4 w-4' />
             Enroll Now

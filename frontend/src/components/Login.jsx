@@ -7,22 +7,20 @@ import { Separator } from '@/components/ui/separator';
 import { AtSign, Lock, Github, ExternalLink } from 'lucide-react';
 import AuthLayout from './layout/AuthLayout';
 import { useTheme } from '@/context/ThemeContext';
-import axios from 'axios';
+import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { theme } = useTheme();
+  const { login } = useAuth();
   const navigate = useNavigate();
 
   const isDarkMode = theme === 'dark';
   const containerVariants = {
     hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.1 },
-    },
+    visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
   };
 
   const itemVariants = {
@@ -37,16 +35,9 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
-        'http://localhost:5001/api/auth/login',
-        {
-          email,
-          password,
-        }
-      );
-      localStorage.setItem('token', response.data.token);
-      alert('Login successful!');
-      navigate('/courses');
+      await login(email, password);
+      // alert('Login successful!');
+      navigate('/');
     } catch (error) {
       alert(error.response?.data?.message || 'Login failed');
     }
@@ -58,8 +49,9 @@ const Login = () => {
         initial='hidden'
         animate='visible'
         variants={containerVariants}
-        className={`p-8 rounded-xl shadow-lg space-y-6 transition-all duration-300
-          ${isDarkMode ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'}`}
+        className={`p-8 rounded-xl shadow-lg space-y-6 transition-all duration-300 ${
+          isDarkMode ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'
+        }`}
       >
         <motion.h2
           variants={itemVariants}

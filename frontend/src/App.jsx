@@ -7,6 +7,7 @@ import {
 } from 'react-router-dom';
 import { ThemeProvider } from './context/ThemeContext';
 import { CartProvider } from './context/CartContext';
+import { AuthProvider } from './context/AuthContext';
 import Dashboard from './components/Dashboard/Dashboard';
 import SingleCourse from './components/Courses/SingleCourse';
 import Courses from './components/Courses/Courses';
@@ -46,11 +47,13 @@ const AppContent = () => {
 
 const App = () => (
   <ThemeProvider>
-    <CartProvider>
-      <Router>
-        <AppContent />
-      </Router>
-    </CartProvider>
+    <AuthProvider>
+      <CartProvider>
+        <Router>
+          <AppContent />
+        </Router>
+      </CartProvider>
+    </AuthProvider>
   </ThemeProvider>
 );
 

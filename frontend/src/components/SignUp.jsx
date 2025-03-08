@@ -1,32 +1,38 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import AuthLayout from './layout/AuthLayout';
-import { User, AtSign, Lock, Github, ExternalLink } from 'lucide-react';
+import {
+  User,
+  AtSign,
+  Lock,
+  Github,
+  ExternalLink,
+  CheckCircle,
+} from 'lucide-react';
 import { useTheme } from '@/context/ThemeContext';
+import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 const Signup = () => {
   const { theme } = useTheme();
+  const { login } = useAuth();
   const navigate = useNavigate();
-
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     password: '',
     confirmPassword: '',
   });
+  const [isSignupSuccess, setIsSignupSuccess] = useState(false);
 
   const containerVariants = {
     hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.1 },
-    },
+    visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
   };
 
   const itemVariants = {
@@ -36,6 +42,16 @@ const Signup = () => {
       y: 0,
       transition: { type: 'spring', stiffness: 100 },
     },
+  };
+
+  const popupVariants = {
+    hidden: { opacity: 0, scale: 0.8 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: { duration: 0.3, type: 'spring', stiffness: 200 },
+    },
+    exit: { opacity: 0, scale: 0.8, transition: { duration: 0.2 } },
   };
 
   const handleChange = (e) => {
@@ -49,7 +65,7 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (formData.password !== formData.confirmPassword) {
-      alert('Passwords do not match');
+      alert('Passwords do not match'); // Keeping this for now; will replace with popup later
       return;
     }
     try {
@@ -62,10 +78,15 @@ const Signup = () => {
         }
       );
       localStorage.setItem('token', response.data.token);
-      alert('Signup successful!');
-      navigate('/courses');
+      // Update AuthContext user state by simulating login
+      await login(formData.email, formData.password);
+      setIsSignupSuccess(true);
+      setTimeout(() => {
+        setIsSignupSuccess(false);
+        navigate('/');
+      }, 2000);
     } catch (error) {
-      alert(error.response?.data?.message || 'Signup failed');
+      alert(error.response?.data?.message || 'Signup failed'); // Keeping this; will replace with error popup
     }
   };
 
@@ -218,6 +239,35 @@ const Signup = () => {
           </div>
         </motion.div>
       </motion.div>
+
+      {/* Success Popup */}
+      <AnimatePresence>
+        {isSignupSuccess && (
+          <motion.div
+            initial='hidden'
+            animate='visible'
+            exit='exit'
+            variants={popupVariants}
+            className={`fixed inset-0 flex items-center justify-center z-50 ${
+              theme === 'dark' ? 'bg-gray-900/80' : 'bg-gray-500/50'
+            }`}
+          >
+            <motion.div
+              className={`p-6 rounded-lg shadow-lg flex flex-col items-center space-y-4 ${
+                theme === 'dark'
+                  ? 'bg-gray-800 text-white'
+                  : 'bg-white text-gray-900'
+              }`}
+            >
+              <CheckCircle className='h-12 w-12 text-green-500' />
+              <h3 className='text-xl font-semibold'>Signup Successful!</h3>
+              <p className='text-sm text-center'>
+                Welcome to LearnHub! Redirecting to future 😉...
+              </p>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </AuthLayout>
   );
 };
