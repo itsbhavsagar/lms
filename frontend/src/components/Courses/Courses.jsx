@@ -21,15 +21,18 @@ const Courses = () => {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        const response = await axios.get('http://localhost:5001/api/courses', {
-          params: {
-            search: filters.search,
-            minPrice: filters.priceRange[0],
-            maxPrice: filters.priceRange[1],
-            rating: filters.rating,
-            duration: filters.duration,
-          },
-        });
+        const response = await axios.get(
+          ${API_BASE_URL}/api/auth/login/api/courses',
+          {
+            params: {
+              search: filters.search,
+              minPrice: filters.priceRange[0],
+              maxPrice: filters.priceRange[1],
+              rating: filters.rating,
+              duration: filters.duration,
+            },
+          }
+        );
         setCoursesData(response.data);
         setIsLoading(false);
       } catch (error) {

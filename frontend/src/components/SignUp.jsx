@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import AuthLayout from './layout/AuthLayout';
+import API_BASE_URL from '../config/api';
 import {
   User,
   AtSign,
@@ -69,14 +70,11 @@ const Signup = () => {
       return;
     }
     try {
-      const response = await axios.post(
-        'http://localhost:5001/api/auth/signup',
-        {
-          name: formData.name,
-          email: formData.email,
-          password: formData.password,
-        }
-      );
+      const response = await axios.post(`${API_BASE_URL}/api/auth/signup`, {
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+      });
       localStorage.setItem('token', response.data.token);
       // Update AuthContext user state by simulating login
       await login(formData.email, formData.password);

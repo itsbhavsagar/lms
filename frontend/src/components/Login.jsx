@@ -9,6 +9,7 @@ import AuthLayout from './layout/AuthLayout';
 import { useTheme } from '@/context/ThemeContext';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import API_BASE_URL from '../config/api';
 
 const Login = () => {
   const [email, setEmail] = useState('');

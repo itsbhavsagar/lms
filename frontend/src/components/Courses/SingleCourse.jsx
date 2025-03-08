@@ -19,9 +19,7 @@ const SingleCourse = () => {
     const fetchCourse = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(
-          `http://localhost:5001/api/courses/${id}`
-        );
+        const response = await axios.get(`${API_BASE_URL}/api/courses/${id}`);
         setCourse(response.data);
         setLoading(false);
       } catch (err) {
