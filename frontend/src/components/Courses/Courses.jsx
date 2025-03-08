@@ -6,7 +6,7 @@ import CourseHero from './CourseHero';
 import CategorySection from './CategorySection';
 import FilterBar from './FilterBar';
 import axios from 'axios';
-import API_BASE_URL from '../config/api';
+import API_BASE_URL from '../../config/api';
 
 const Courses = () => {
   const [coursesData, setCoursesData] = useState([]);
