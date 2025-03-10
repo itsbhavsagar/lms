@@ -103,7 +103,7 @@ const Courses = () => {
               Try adjusting your search criteria
             </p>
             <button
-              className="mt-4 px-4 py-2 bg-primary text-black rounded-md hover:bg-primary/90 transition-colors"
+              className="mt-4 px-4 py-2  border-2  rounded-md  transition-colors"
               onClick={() =>
                 setFilters({
                   search: '',

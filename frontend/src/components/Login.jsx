@@ -37,7 +37,6 @@ const Login = () => {
     e.preventDefault();
     try {
       await login(email, password);
-      // alert('Login successful!');
       navigate('/');
     } catch (error) {
       alert(error.response?.data?.message || 'Login failed');
@@ -47,8 +46,8 @@ const Login = () => {
   return (
     <AuthLayout>
       <motion.div
-        initial='hidden'
-        animate='visible'
+        initial="hidden"
+        animate="visible"
         variants={containerVariants}
         className={`p-8 rounded-xl shadow-lg space-y-6 transition-all duration-300 ${
           isDarkMode ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'
@@ -56,7 +55,7 @@ const Login = () => {
       >
         <motion.h2
           variants={itemVariants}
-          className='text-3xl font-bold text-center'
+          className="text-3xl font-bold text-center"
         >
           Login
         </motion.h2>
@@ -64,16 +63,16 @@ const Login = () => {
         <motion.form
           onSubmit={handleSubmit}
           variants={containerVariants}
-          className='space-y-4'
+          className="space-y-4"
         >
           <motion.div variants={itemVariants}>
             <Label
-              htmlFor='email'
+              htmlFor="email"
               className={isDarkMode ? 'text-gray-300' : 'text-gray-700'}
             >
               Email
             </Label>
-            <div className='relative'>
+            <div className="relative">
               <AtSign
                 className={`absolute left-3 top-1/2 -translate-y-1/2 ${
                   isDarkMode ? 'text-gray-400' : 'text-gray-500'
@@ -81,9 +80,9 @@ const Login = () => {
                 size={20}
               />
               <Input
-                type='email'
-                id='email'
-                placeholder='Enter your email'
+                type="email"
+                id="email"
+                placeholder="Enter your email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className={`pl-10 ${
@@ -98,12 +97,12 @@ const Login = () => {
 
           <motion.div variants={itemVariants}>
             <Label
-              htmlFor='password'
+              htmlFor="password"
               className={isDarkMode ? 'text-gray-300' : 'text-gray-700'}
             >
               Password
             </Label>
-            <div className='relative'>
+            <div className="relative">
               <Lock
                 className={`absolute left-3 top-1/2 -translate-y-1/2 ${
                   isDarkMode ? 'text-gray-400' : 'text-gray-500'
@@ -111,9 +110,9 @@ const Login = () => {
                 size={20}
               />
               <Input
-                type='password'
-                id='password'
-                placeholder='Enter your password'
+                type="password"
+                id="password"
+                placeholder="Enter your password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className={`pl-10 ${
@@ -128,10 +127,10 @@ const Login = () => {
 
           <motion.div
             variants={itemVariants}
-            className='flex justify-between items-center'
+            className="flex justify-between items-center"
           >
             <a
-              href='#'
+              href="#"
               className={`text-sm ${
                 isDarkMode ? 'text-blue-400' : 'text-blue-600'
               } hover:underline`}
@@ -141,28 +140,28 @@ const Login = () => {
           </motion.div>
 
           <motion.div variants={itemVariants}>
-            <Button type='submit' className='w-full'>
+            <Button type="submit" className="w-full">
               Login
             </Button>
           </motion.div>
         </motion.form>
 
         <motion.div variants={itemVariants}>
-          <Separator className='my-4 border-gray-300 dark:border-gray-700' />
-          <div className='flex space-x-4 justify-center'>
+          <Separator className="my-4 border-gray-300 dark:border-gray-700" />
+          <div className="flex space-x-4 justify-center">
             <Button
-              variant='outline'
-              size='icon'
+              variant="outline"
+              size="icon"
               className={isDarkMode ? 'border-gray-600' : ''}
             >
-              <ExternalLink className='h-5 w-5' />
+              <ExternalLink className="h-5 w-5" />
             </Button>
             <Button
-              variant='outline'
-              size='icon'
+              variant="outline"
+              size="icon"
               className={isDarkMode ? 'border-gray-600' : ''}
             >
-              <Github className='h-5 w-5' />
+              <Github className="h-5 w-5" />
             </Button>
           </div>
         </motion.div>
