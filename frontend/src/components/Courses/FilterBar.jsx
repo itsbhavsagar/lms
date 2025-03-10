@@ -4,6 +4,7 @@ import { Search, Sliders, X } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
+import { useTheme } from '@/context/ThemeContext';
 import {
   Select,
   SelectContent,
@@ -43,8 +44,16 @@ const FilterBar = ({ filters, setFilters }) => {
     }));
   };
 
+  const { theme } = useTheme();
+
   return (
-    <div className="sticky top-0 z-10 bg-white/90 backdrop-blur-sm py-4 px-2 mb-8 rounded-lg shadow-sm">
+    <div
+      className={`sticky top-0 z-10 py-4 px-2 mb-8 rounded-lg shadow-sm ${
+        theme === 'dark'
+          ? 'bg-gray-900 text-white backdrop-blur-sm'
+          : 'bg-white text-gray-900 backdrop-blur-sm'
+      }`}
+    >
       <div className="flex items-center gap-3">
         <div className="relative flex-grow">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
@@ -53,7 +62,11 @@ const FilterBar = ({ filters, setFilters }) => {
             placeholder="Search courses..."
             value={filters.search}
             onChange={handleSearchChange}
-            className="pl-10 py-5 border-gray-200"
+            className={`pl-10 py-5 border ${
+              theme === 'dark'
+                ? 'border-gray-700 bg-gray-800 text-white'
+                : 'border-gray-200 bg-white text-gray-900'
+            }`}
           />
           {filters.search && (
             <button
@@ -150,7 +163,11 @@ const FilterBar = ({ filters, setFilters }) => {
             <div className="flex justify-end mt-6">
               <Button
                 variant="outline"
-                className="mr-2"
+                className={
+                  theme === 'dark'
+                    ? 'border-gray-600 text-white'
+                    : 'border-gray-300 text-gray-900'
+                }
                 onClick={() =>
                   setFilters({
                     search: '',

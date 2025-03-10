@@ -23,21 +23,23 @@ export const CartProvider = ({ children }) => {
     fetchCart();
   }, []);
 
+  // Fix: Return a promise to allow waiting for completion
   const addToCart = async (course) => {
     const token = localStorage.getItem('token');
     if (!token) {
       alert('Please log in to add items to cart');
-      return;
+      throw new Error('User not logged in');
     }
     try {
       const response = await axios.post(
-        `${API_BASE_URL}/api/cart/add`, // Fixed double slash
+        `${API_BASE_URL}/api/cart/add`,
         { courseId: course._id },
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setCart(response.data);
     } catch (error) {
       alert(error.response?.data?.message || 'Failed to add to cart');
+      throw error; // Fix: Re-throw error to allow caller to handle it
     }
   };
 

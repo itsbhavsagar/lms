@@ -2,9 +2,19 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { BookOpen, Award, Users } from 'lucide-react';
 
+import { useTheme } from '@/context/ThemeContext';
+
 const CourseHero = () => {
+  const { theme } = useTheme();
+
   return (
-    <div className="bg-gradient-to-r from-indigo-600 to-blue-500 text-white py-20 px-4">
+    <div
+      className={`py-20 px-4 transition-colors ${
+        theme === 'dark'
+          ? 'bg-gradient-to-r from-gray-900 to-gray-800 text-white'
+          : 'bg-gradient-to-r from-indigo-600 to-blue-500 text-white'
+      }`}
+    >
       <div className="container mx-auto max-w-4xl">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -15,12 +25,12 @@ const CourseHero = () => {
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 mt-10">
             Unlock Your Potential
           </h1>
-          <p className="text-lg md:text-xl opacity-90 mb-8 max-w-3xl mx-auto">
+          <p className="md:text-xl text-base opacity-90 mb-8 max-w-3xl mx-auto">
             Discover courses designed to transform your skills and propel your
             career forward. Learn from industry experts at your own pace.
           </p>
 
-          <div className="flex flex-col md:flex-row justify-center gap-4 md:gap-10 mt-12">
+          <div className="flex flex-row md:flex-row justify-center gap-4 md:gap-10 mt-12">
             <motion.div
               whileHover={{ y: -5 }}
               className="flex flex-col items-center"
