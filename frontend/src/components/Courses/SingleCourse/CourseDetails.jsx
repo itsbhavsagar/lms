@@ -18,13 +18,41 @@ const CourseDetails = ({
   activeTab,
   setActiveTab,
   isAddingToCart,
-  handleAddToCart,
+  setIsAddingToCart,
+  addToCart,
+  removeFromCart,
+  cart,
   isWishlisted,
   toggleWishlist,
 }) => {
+  const isCourseInCart = cart.some((item) => item._id === course._id);
+
+  const handleAddToCart = async () => {
+    setIsAddingToCart(true);
+    try {
+      await addToCart(course);
+    } catch (error) {
+      console.error('Failed to add to cart:', error);
+    } finally {
+      setIsAddingToCart(false);
+    }
+  };
+
+  const handleRemoveFromCart = async () => {
+    setIsAddingToCart(true);
+    try {
+      await removeFromCart(course._id);
+    } catch (error) {
+      console.error('Failed to remove from cart:', error);
+    } finally {
+      setIsAddingToCart(false);
+    }
+  };
+
   return (
     <div className="container mx-auto px-4 py-6 sm:py-8 max-w-6xl -mt-10 sm:-mt-16 relative z-20">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+        {/* Mobile Sidebar (shown at top) */}
         <div className="md:hidden col-span-1 order-1">
           <div className="rounded-lg border shadow-md mb-6">
             <div className="relative aspect-video overflow-hidden rounded-t-lg">
@@ -79,13 +107,32 @@ const CourseDetails = ({
               </div>
 
               <div className="space-y-3 mb-4 sm:mb-6">
-                <Button
-                  onClick={handleAddToCart}
-                  className="w-full py-4 sm:py-6 text-base sm:text-lg font-medium rounded-lg"
-                  disabled={isAddingToCart}
-                >
-                  {isAddingToCart ? 'Adding to Cart...' : 'Enroll Now'}
-                </Button>
+                {isCourseInCart ? (
+                  <div className="flex gap-2">
+                    <Button
+                      className="w-full py-4 sm:py-6 text-base sm:text-lg font-medium rounded-lg bg-gray-500 hover:bg-gray-600"
+                      disabled={isAddingToCart}
+                    >
+                      Already Added
+                    </Button>
+                    <Button
+                      variant="outline"
+                      className="w-full py-4 sm:py-6 text-base sm:text-lg font-medium rounded-lg"
+                      onClick={handleRemoveFromCart}
+                      disabled={isAddingToCart}
+                    >
+                      {isAddingToCart ? 'Removing...' : 'Remove'}
+                    </Button>
+                  </div>
+                ) : (
+                  <Button
+                    onClick={handleAddToCart}
+                    className="w-full py-4 sm:py-6 text-base sm:text-lg font-medium rounded-lg"
+                    disabled={isAddingToCart}
+                  >
+                    {isAddingToCart ? 'Adding to Cart...' : 'Add to Cart'}
+                  </Button>
+                )}
               </div>
             </div>
           </div>
@@ -333,13 +380,32 @@ const CourseDetails = ({
               </div>
 
               <div className="space-y-3 mb-6">
-                <Button
-                  onClick={handleAddToCart}
-                  className="w-full py-6 text-lg font-medium rounded-lg"
-                  disabled={isAddingToCart}
-                >
-                  {isAddingToCart ? 'Adding to Cart...' : 'Enroll Now'}
-                </Button>
+                {isCourseInCart ? (
+                  <div className="flex gap-2">
+                    <Button
+                      className="w-full py-6 text-lg font-medium rounded-lg bg-gray-500 hover:bg-gray-600"
+                      disabled={isAddingToCart}
+                    >
+                      Already Added
+                    </Button>
+                    <Button
+                      variant="outline"
+                      className="w-full py-6 text-lg font-medium rounded-lg"
+                      onClick={handleRemoveFromCart}
+                      disabled={isAddingToCart}
+                    >
+                      {isAddingToCart ? 'Removing...' : 'Remove'}
+                    </Button>
+                  </div>
+                ) : (
+                  <Button
+                    onClick={handleAddToCart}
+                    className="w-full py-6 text-lg font-medium rounded-lg"
+                    disabled={isAddingToCart}
+                  >
+                    {isAddingToCart ? 'Adding to Cart...' : 'Add to Cart'}
+                  </Button>
+                )}
                 <div className="flex gap-2">
                   <Button
                     variant="outline"

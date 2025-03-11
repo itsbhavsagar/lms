@@ -9,15 +9,11 @@ const CartContext = createContext({
   clearCart: () => {},
   total: 0,
   loading: false,
+  showAuthDialog: false,
+  setShowAuthDialog: () => {},
 });
 
-const getToken = () => {
-  const token = localStorage.getItem('token');
-  if (!token) {
-    throw new Error('User not logged in');
-  }
-  return token;
-};
+const getToken = () => localStorage.getItem('token');
 
 const validateCartResponse = (response) => {
   if (!response.data || !Array.isArray(response.data)) {
@@ -33,16 +29,20 @@ const calculateTotal = (cart) => {
 export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [showAuthDialog, setShowAuthDialog] = useState(false);
 
+  // Fetch cart on mount if token exists
   useEffect(() => {
     const fetchCart = async () => {
       setLoading(true);
       try {
         const token = getToken();
-        const response = await axios.get(`${API_BASE_URL}/api/cart`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        setCart(validateCartResponse(response));
+        if (token) {
+          const response = await axios.get(`${API_BASE_URL}/api/cart`, {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          setCart(validateCartResponse(response));
+        }
       } catch (error) {
         console.error('Error fetching cart:', error);
       } finally {
@@ -52,9 +52,41 @@ export const CartProvider = ({ children }) => {
     fetchCart();
   }, []);
 
-  const addToCart = async (course) => {
-    try {
+  useEffect(() => {
+    const checkToken = () => {
       const token = getToken();
+      console.log(
+        'CartContext - Token:',
+        token,
+        'ShowAuthDialog:',
+        showAuthDialog
+      );
+      if (token && showAuthDialog) {
+        console.log('CartContext - Resetting showAuthDialog');
+        setShowAuthDialog(false);
+      }
+    };
+
+    checkToken();
+
+    window.addEventListener('storage', checkToken);
+
+    const interval = setInterval(checkToken, 1000);
+
+    return () => {
+      window.removeEventListener('storage', checkToken);
+      clearInterval(interval);
+    };
+  }, [showAuthDialog]);
+
+  const addToCart = async (course) => {
+    const token = getToken();
+    if (!token) {
+      setShowAuthDialog(true);
+      return;
+    }
+
+    try {
       const response = await axios.post(
         `${API_BASE_URL}/api/cart/add`,
         { courseId: course._id },
@@ -70,6 +102,7 @@ export const CartProvider = ({ children }) => {
   const removeFromCart = async (courseId) => {
     try {
       const token = getToken();
+      if (!token) return;
       const response = await axios.post(
         `${API_BASE_URL}/api/cart/remove`,
         { courseId },
@@ -84,6 +117,7 @@ export const CartProvider = ({ children }) => {
   const clearCart = async () => {
     try {
       const token = getToken();
+      if (!token) return;
       const response = await axios.post(
         `${API_BASE_URL}/api/cart/clear`,
         {},
@@ -104,6 +138,8 @@ export const CartProvider = ({ children }) => {
         clearCart,
         total: calculateTotal(cart),
         loading,
+        showAuthDialog,
+        setShowAuthDialog,
       }}
     >
       {children}

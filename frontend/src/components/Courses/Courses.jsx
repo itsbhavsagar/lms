@@ -8,11 +8,24 @@ import CategorySection from './CategorySection';
 import FilterBar from './FilterBar';
 import axios from 'axios';
 import API_BASE_URL from '../../config/api';
+import { useCart } from '../../context/CartContext';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import { useNavigate } from 'react-router-dom';
 
 const Courses = () => {
   const { theme } = useTheme();
   const [coursesData, setCoursesData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const { showAuthDialog, setShowAuthDialog } = useCart();
+  const navigate = useNavigate();
   const [filters, setFilters] = useState({
     search: '',
     priceRange: [0, 1000],
@@ -82,10 +95,8 @@ const Courses = () => {
       }`}
     >
       <CourseHero />
-
       <div className="container mx-auto px-4 pb-16">
         <FilterBar filters={filters} setFilters={setFilters} />
-
         {isLoading ? (
           <div className="flex justify-center items-center py-20">
             <Loader2 className="w-12 h-12 animate-spin text-primary" />
@@ -103,7 +114,7 @@ const Courses = () => {
               Try adjusting your search criteria
             </p>
             <button
-              className="mt-4 px-4 py-2  border-2  rounded-md  transition-colors"
+              className="mt-4 px-4 py-2 border-2 rounded-md transition-colors"
               onClick={() =>
                 setFilters({
                   search: '',
@@ -135,7 +146,6 @@ const Courses = () => {
                   />
                 ))}
             </div>
-
             {Object.keys(coursesByCategory).length > visibleCategories && (
               <div ref={loadMoreRef} className="flex justify-center py-10">
                 <Loader2 className="w-8 h-8 animate-spin text-primary" />
@@ -144,6 +154,25 @@ const Courses = () => {
           </Suspense>
         )}
       </div>
+      <Dialog open={showAuthDialog} onOpenChange={setShowAuthDialog}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Authentication Required</DialogTitle>
+            <DialogDescription>
+              Please log in or sign up to add courses to your cart.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="flex flex-col sm:flex-row gap-2">
+            <Button onClick={() => navigate('/login')}>Login</Button>
+            <Button variant="outline" onClick={() => navigate('/signup')}>
+              Sign Up
+            </Button>
+            <Button variant="ghost" onClick={() => setShowAuthDialog(false)}>
+              Cancel
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

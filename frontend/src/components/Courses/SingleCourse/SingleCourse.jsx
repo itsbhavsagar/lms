@@ -7,11 +7,20 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Star, User } from 'lucide-react';
 import CourseDetails from './CourseDetails';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 
 const SingleCourse = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { addToCart } = useCart();
+  const { addToCart, removeFromCart, cart, showAuthDialog, setShowAuthDialog } =
+    useCart();
   const [course, setCourse] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -46,18 +55,6 @@ const SingleCourse = () => {
 
     return () => abortController.abort();
   }, [id]);
-
-  const handleAddToCart = async () => {
-    setIsAddingToCart(true);
-    try {
-      await addToCart(course);
-      navigate('/cart');
-    } catch (error) {
-      console.error('Failed to add to cart:', error);
-    } finally {
-      setIsAddingToCart(false);
-    }
-  };
 
   const toggleWishlist = () => setIsWishlisted(!isWishlisted);
 
@@ -134,10 +131,34 @@ const SingleCourse = () => {
         activeTab={activeTab}
         setActiveTab={setActiveTab}
         isAddingToCart={isAddingToCart}
-        handleAddToCart={handleAddToCart}
+        setIsAddingToCart={setIsAddingToCart}
+        addToCart={addToCart}
+        removeFromCart={removeFromCart}
+        cart={cart}
         isWishlisted={isWishlisted}
         toggleWishlist={toggleWishlist}
       />
+
+      {/* Authentication Dialog */}
+      <Dialog open={showAuthDialog} onOpenChange={setShowAuthDialog}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Authentication Required</DialogTitle>
+            <DialogDescription>
+              Please log in or sign up to add courses to your cart.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="flex flex-col sm:flex-row gap-2">
+            <Button onClick={() => navigate('/login')}>Login</Button>
+            <Button variant="outline" onClick={() => navigate('/signup')}>
+              Sign Up
+            </Button>
+            <Button variant="ghost" onClick={() => setShowAuthDialog(false)}>
+              Cancel
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
