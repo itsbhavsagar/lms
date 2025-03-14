@@ -9,7 +9,6 @@ A modern, feature-rich Learning Management System built with the MERN stack (Mon
 - **User Authentication & Authorization**
   - Secure signup and login
   - JWT-based authentication
-  - Role-based access control (students, instructors, admins)
 
 - **Course Management**
   - Browse courses with advanced filtering and search
@@ -18,7 +17,7 @@ A modern, feature-rich Learning Management System built with the MERN stack (Mon
 
 - **E-Commerce Functionality**
   - Shopping cart management
-  - Secure checkout process
+  - Checkout process
   - Order history
 
 - **User Dashboard**
